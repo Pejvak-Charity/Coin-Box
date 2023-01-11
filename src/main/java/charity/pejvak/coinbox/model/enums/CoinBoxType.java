@@ -1,4 +1,4 @@
-package charity.pejvak.coinbox.model;
+package charity.pejvak.coinbox.model.enums;
 
 public enum CoinBoxType {
     STORE("store"),HOMEMADE("homemade"),STANDING("standing");

@@ -1,6 +1,7 @@
 package charity.pejvak.coinbox.model;
 
 
+import charity.pejvak.coinbox.model.enums.CoinBoxType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

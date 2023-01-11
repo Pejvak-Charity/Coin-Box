@@ -1,4 +1,4 @@
-package charity.pejvak.coinbox.model;
+package charity.pejvak.coinbox.model.enums;
 
 public enum CoinBoxRequestStatus {
     SUBMITTED("Submitted"),COORDINATED("Coordinated"),CANCELLED("Cancelled"),

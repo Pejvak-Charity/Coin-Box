@@ -1,5 +1,6 @@
 package charity.pejvak.coinbox.model;
 
+import charity.pejvak.coinbox.model.enums.CoinBoxRequestStatus;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
