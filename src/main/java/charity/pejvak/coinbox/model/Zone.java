@@ -1,5 +1,6 @@
 package charity.pejvak.coinbox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class Zone {
 
     @ManyToOne()
     @JoinColumn(name = "city_id",referencedColumnName = "id")
+    @JsonIgnore
     private City city;
 
     public Zone(String name, String description, City city) {
@@ -65,6 +67,8 @@ public class Zone {
         return city;
     }
 
+
+    @Deprecated()
     public void setCity(City city) {
         this.city = city;
     }
