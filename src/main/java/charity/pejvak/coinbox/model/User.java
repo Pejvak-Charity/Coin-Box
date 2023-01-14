@@ -1,26 +1,17 @@
 package charity.pejvak.coinbox.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import charity.pejvak.coinbox.model.enums.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "User")
 @Table(name = "_User",uniqueConstraints = {
@@ -40,20 +31,20 @@ public class User implements UserDetails {
             allocationSize = 1)
     @GeneratedValue(generator = "UserId",strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "username",nullable = false)
-    private String username;
+    @Column(name = "username")
+    private String username = "username";
 
-    @Column(name = "password",nullable = false)
-    private String password;
+    @Column(name = "password")
+    private String password = "password";
     @Column(name = "email")
-    private String email;
+    private String email = "email";
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number" , nullable = false)
     private String phoneNumber;
 
     @Column(name = "national_code")
@@ -62,10 +53,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserOTP> userOTPS = new HashSet<>();
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
