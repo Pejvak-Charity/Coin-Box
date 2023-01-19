@@ -11,7 +11,7 @@
     </parent>
     <groupId>charity.pejvak</groupId>
     <artifactId>Coin-Box</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Coin-Box</name>
     <description>Coin-Box</description>
