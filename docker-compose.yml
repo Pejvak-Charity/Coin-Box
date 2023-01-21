@@ -2,7 +2,7 @@ version: "1.1"
 services:
   db:
     container_name: db
-    image: postgres:latest
+    image: postgres:alpine
     user: postgres
     ports:
       - "5432:5432"
@@ -16,6 +16,11 @@ services:
   backend:
     build: ./
     container_name: backend
+    environment:
+      - DB_SERVER=db
+      - POSTGRES_DB=pejvak-coin-box
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
     ports:
       - "80:8080"
     depends_on:
