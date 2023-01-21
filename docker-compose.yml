@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=coinboxdb
     volumes:
-      - db_volume:/var/lib/postgresql/data
+      - dbvolume:/var/lib/postgresql/data
   backend:
     build: ./
     container_name: backend
@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
 volumes:
-  db_volume:
+  dbvolume:
     external: true
 
 #  back-end:

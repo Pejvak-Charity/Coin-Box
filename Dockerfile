@@ -1,5 +1,4 @@
 FROM amazoncorretto:17.0.5
-COPY envirement.env ./.env
 RUN yum install git -y
 RUN git clone https://github.com/Pejvak-Charity/Coin-Box
 RUN yum install unzip -y
