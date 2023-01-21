@@ -1,0 +1,33 @@
+version: "1.1"
+services:
+  db:
+    container_name: db
+    image: postgres:latest
+    hostname: my_db
+    user: postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=coinboxdb
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+  backend:
+    build: ./
+    container_name: backend
+    ports:
+      - "80:8080"
+    depends_on:
+      - db
+volumes:
+  db_volume:
+    external: true
+
+#  back-end:
+#    build: .
+#    ports:
+#      - 8080:80
+#    depends_on:
+#      - db
