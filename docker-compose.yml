@@ -10,7 +10,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=coin_box
+      - POSTGRES_DB=coinboxdb
     volumes:
       - dbvolume:/var/lib/postgresql/data
   backend:
@@ -18,7 +18,7 @@ services:
     container_name: backend
     environment:
       - DB_SERVER=db
-      - POSTGRES_DB=coin_box
+      - POSTGRES_DB=coinboxdb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
     ports:
