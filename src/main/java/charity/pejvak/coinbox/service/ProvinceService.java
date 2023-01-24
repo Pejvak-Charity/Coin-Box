@@ -7,9 +7,9 @@ import charity.pejvak.coinbox.repository.ProvinceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProvinceService {
@@ -25,8 +25,8 @@ public class ProvinceService {
         return provinceRepository.saveAndFlush(province);
     }
 
-    public List<Province> getProvinces() {
-        return provinceRepository.findAll();
+    public Page<Province> getProvinces(Pageable pageable) {
+        return provinceRepository.findAll(pageable);
     }
 
     public Province deleteProvince(int provinceId) {
@@ -53,6 +53,19 @@ public class ProvinceService {
         return provinceRepository.saveAndFlush(province);
     }
 
+    public Province getProvinceById(int id){
+        return provinceRepository.findById(id).orElseThrow(() -> {throw new NoSuchProvinceExistsException("No Such Province Exists With Id: "+id);});
+    }
+
 
     Logger logger = LoggerFactory.getLogger(ProvinceService.class);
+
+    public Province updatePrivince(int provinceId, Province province) {
+        Province oldProvince = getProvinceById(provinceId);
+
+        oldProvince.setName(province.getName());
+
+        return provinceRepository.saveAndFlush(oldProvince);
+
+    }
 }

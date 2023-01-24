@@ -1,6 +1,5 @@
 package charity.pejvak.coinbox.service;
 
-import charity.pejvak.coinbox.exception.NoSuchProvinceExistsException;
 import charity.pejvak.coinbox.exception.NoSuchUserExistsException;
 import charity.pejvak.coinbox.model.User;
 import charity.pejvak.coinbox.repository.UserRepository;

@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1.0/login")
+@RequestMapping("/api/v1.0")
 @RequiredArgsConstructor
 public class LoginController {
     private final UserOTPService userOtpService;
@@ -25,7 +25,7 @@ public class LoginController {
     private final JWTService jwtService;
 
 
-    @GetMapping("")
+    @GetMapping("/login")
     public ResponseEntity<String> getTestMessage(){
         return ResponseEntity.ok("hi ali");
     }
@@ -35,7 +35,7 @@ public class LoginController {
         return ResponseEntity.ok(OTPResponse.builder().message("OTP sent successfully !").build());
     }
 
-    @PostMapping("")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authRequest) {
         userOtpService.checkOTP(authRequest.getOtp(), authRequest.getPhoneNumber());
         User user = userService.getUserByPhoneNumber(authRequest.getPhoneNumber());

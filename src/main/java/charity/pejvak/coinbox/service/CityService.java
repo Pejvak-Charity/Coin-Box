@@ -2,26 +2,24 @@ package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchCityException;
 import charity.pejvak.coinbox.model.City;
+import charity.pejvak.coinbox.model.Province;
 import charity.pejvak.coinbox.model.Zone;
 import charity.pejvak.coinbox.repository.CityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class CityService {
 
     private final CityRepository cityRepository;
 
 
-    @Autowired
-    public CityService(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
-    }
 
-    public List<City> getCities() {
-        return cityRepository.findAll();
+    public Page<City> getCities(Province province, Pageable pageable) {
+        return cityRepository.findAllByProvince(province,pageable);
     }
 
     public City addCity(City city) {

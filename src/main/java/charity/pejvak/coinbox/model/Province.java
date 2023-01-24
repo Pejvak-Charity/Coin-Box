@@ -1,19 +1,20 @@
 package charity.pejvak.coinbox.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "province")
 @Table(name = "province")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,8 +31,6 @@ public class Province {
         cities.add(city);
     }
 
-    public Province() {
-    }
 
 
     public Province(String name) {
