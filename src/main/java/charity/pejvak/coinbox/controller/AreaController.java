@@ -1,7 +1,14 @@
 package charity.pejvak.coinbox.controller;
 
+import charity.pejvak.coinbox.componenet.CityRequest;
 import charity.pejvak.coinbox.componenet.ProvinceRequest;
+import charity.pejvak.coinbox.componenet.ZoneRequest;
+import charity.pejvak.coinbox.exception.NoSuchCityException;
+import charity.pejvak.coinbox.exception.NoSuchProvinceExistsException;
+import charity.pejvak.coinbox.exception.NoSuchZoneExistsException;
+import charity.pejvak.coinbox.model.City;
 import charity.pejvak.coinbox.model.Province;
+import charity.pejvak.coinbox.model.Zone;
 import charity.pejvak.coinbox.service.CityService;
 import charity.pejvak.coinbox.service.ProvinceService;
 import charity.pejvak.coinbox.service.ZoneService;
@@ -12,8 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1.0")
@@ -33,13 +39,7 @@ public class AreaController {
 
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Province> provincePage = provinceService.getProvinces(pageable);
-        Map<String, Object> response = new HashMap<>();
-        response.put("content", provincePage.getContent());
-        response.put("page", provincePage.getPageable().getPageNumber());
-        response.put("pageSize", provincePage.getPageable().getPageSize());
-        response.put("totalPages", provincePage.getTotalPages());
-        response.put("totalElements", provincePage.getTotalElements());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(toResponse(provincePage));
     }
 
     @GetMapping("/provinces/{provinceId}")
@@ -54,7 +54,7 @@ public class AreaController {
 
     @PutMapping("/provinces/{provinceId}")
     public Province deleteProvince(@PathVariable int provinceId, @RequestBody ProvinceRequest provinceRequest) {
-        return provinceService.updatePrivince(provinceId, Province.builder().name(provinceRequest.getName()).build());
+        return provinceService.updateProvince(provinceId, Province.builder().name(provinceRequest.getName()).build());
     }
 
     @DeleteMapping("/provinces/{provinceId}")
@@ -63,19 +63,152 @@ public class AreaController {
     }
 
 
-//    @GetMapping("/provinces/{provinceId}/cities")
-//    public Page<City> getCities(@PathVariable(name = "provinceId") int provinceId){
-//        Province province = provinceService.getProvinceById(provinceId);
-//
-//        return cityService.getCities(province,);
-//    }
-/*
-province
-    city
-        zone
+    @GetMapping("/provinces/{provinceId}/cities")
+    public ResponseEntity<Map<String, Object>> getCities(@PathVariable(name = "provinceId") int provinceId,
+                                                         @RequestParam(required = false, defaultValue = "1") int page,
+                                                         @RequestParam(required = false, defaultValue = "50") int pageSize) {
+        Province province = provinceService.getProvinceById(provinceId);
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        Page<City> cityPage = cityService.getCities(province, pageable);
 
 
-    */
+        return ResponseEntity.ok(toResponse(cityPage));
+    }
+
+    @GetMapping("/provinces/{provinceId}/cities/{cityId}")
+    public ResponseEntity<City> getCity(@PathVariable(name = "provinceId") int provinceId,
+                                        @PathVariable(name = "cityId") long cityId) {
+        City city = provinceService.getProvinceById(provinceId)
+                .getCities().stream()
+                .filter(cityFilter -> cityFilter.getId() == cityId).findFirst().orElse(null);
+
+        return ResponseEntity.ok(city);
+    }
+
+    @PostMapping("/provinces/{provinceId}/cities")
+    public ResponseEntity<City> addCity(@PathVariable(name = "provinceId") int provinceId, @RequestBody CityRequest cityRequest) {
+        Province province = provinceService.getProvinceById(provinceId);
+        City city = new City();
+        city.setName(cityRequest.getName());
+        city.setProvince(province);
+        city = cityService.addCity(city);
+        province.addCity(city);
+        provinceService.updateProvince(province);
+        return ResponseEntity.ok(city);
+    }
+
+    @PutMapping("/provinces/{provinceId}/cities/{cityId}")
+    public ResponseEntity<City> updateCity(@PathVariable(name = "provinceId") int provinceId,
+                                           @PathVariable(name = "cityId") long cityId,
+                                           @RequestBody CityRequest cityRequest) {
+        Province province = provinceService.getProvinceById(provinceId);
+
+        City city = province.getCities().stream().filter(filterCity -> filterCity.getId() == cityId).findFirst().orElseThrow(() -> {
+            throw new NoSuchProvinceExistsException("Province not found with id:" + provinceId);
+        });
+
+        city.setName(cityRequest.getName());
+        city = cityService.addCity(city);
+
+        return ResponseEntity.ok(city);
+    }
+
+    @DeleteMapping("/provinces/{provinceId}/cities/{cityId}")
+    public ResponseEntity<Province> deleteCity(@PathVariable(name = "provinceId") int provinceId,
+                                               @PathVariable(name = "cityId") int cityId) {
+        Province province = provinceService.getProvinceById(provinceId);
+
+        province.getCities().removeIf(city -> city.getId() == cityId);
+
+        province = provinceService.updateProvince(province);
+
+        return ResponseEntity.ok(province);
+    }
+
+    @GetMapping("/provinces/{provinceId}/cities/{cityId}/zones")
+    public ResponseEntity<Map<String, Object>> getZones(@PathVariable(name = "provinceId") int provinceId,
+                                                        @PathVariable(name = "cityId") long cityId,
+                                                        @RequestParam(required = false, defaultValue = "1") int page,
+                                                        @RequestParam(required = false, defaultValue = "50") int pageSize) {
+        Province province = provinceService.getProvinceById(provinceId);
+        City city = cityService.getCity(cityId);
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Zone> zones = zoneService.getZones(province,city,pageable);
+
+        return ResponseEntity.ok(toResponse(zones));
+    }
+
+    @GetMapping("/provinces/{provinceId}/cities/{cityId}/zones/{zoneId}")
+    public ResponseEntity<Zone> getZones(@PathVariable(name = "provinceId") int provinceId,
+                                         @PathVariable(name = "cityId") long cityId,
+                                         @PathVariable(name = "zoneId") long zoneId) {
+        Zone zone = provinceService.getProvinceById(provinceId).getCities()
+                .stream().filter(city -> city.getId() == cityId).findFirst().orElseThrow(() -> {
+                    throw new NoSuchCityException();
+                }).getZones().stream().filter(zoneFilter -> zoneFilter.getId() == zoneId).findFirst().orElse(null);
+
+        return ResponseEntity.ok(zone);
+    }
+
+    @PostMapping("/provinces/{provinceId}/cities/{cityId}/zones")
+    public Zone addZone(@PathVariable(name = "provinceId") int provinceId,
+                        @PathVariable(name = "cityId") long cityId,
+                        @RequestBody ZoneRequest zoneRequest) {
+
+        City city = provinceService.getProvinceById(provinceId).getCities().stream().filter(cityFilter -> cityFilter.getId() == cityId).findFirst().orElseThrow(() -> {
+            throw new NoSuchCityException();
+        });
+
+        Zone zone = new Zone();
+        zone.setName(zoneRequest.getName());
+        zone.setDescription(zoneRequest.getDescription());
+
+        city.addZone(zone);
+        cityService.updateCity(city);
+        return zone;
+
+    }
+
+    @PutMapping("/provinces/{provinceId}/cities/{cityId}/zones/{zoneId}")
+    public Zone update(@PathVariable(name = "provinceId") int provinceId,
+                       @PathVariable(name = "cityId") long cityId,
+                       @PathVariable(name = "zoneId") long zoneId,
+                       @RequestBody ZoneRequest zoneRequest) {
+
+        Zone zone = provinceService.getProvinceById(provinceId)
+                .getCities()
+                .stream()
+                .filter(cityFilter -> cityFilter.getId() == cityId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchCityException();
+                })
+                .getZones().stream().filter(zoneFilter -> zoneFilter.getId() == zoneId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchZoneExistsException("No Such zone exists with id: " + zoneId);
+                });
 
 
+        zone.setName(zoneRequest.getName());
+        zone.setDescription(zoneRequest.getDescription());
+
+        zone = zoneService.updateZone(zoneId, zone);
+
+        return zone;
+    }
+
+
+    private Map<String, Object> toResponse(Page<?> page) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", page.getContent());
+        response.put("page", page.getPageable().getPageNumber());
+        response.put("pageSize", page.getPageable().getPageSize());
+        response.put("totalPages", page.getTotalPages());
+        response.put("totalElements", page.getTotalElements());
+        return response;
+    }
 }

@@ -22,6 +22,12 @@ public class CityService {
         return cityRepository.findAllByProvince(province,pageable);
     }
 
+    public City getCity(long cityId){
+        return cityRepository.findById(cityId).orElseThrow(() -> {
+            throw new NoSuchCityException();
+        });
+    }
+
     public City addCity(City city) {
         return cityRepository.saveAndFlush(city);
     }
@@ -49,5 +55,9 @@ public class CityService {
 
         return cityRepository.saveAndFlush(city);
 
+    }
+
+    public City updateCity(City city) {
+        return cityRepository.saveAndFlush(city);
     }
 }

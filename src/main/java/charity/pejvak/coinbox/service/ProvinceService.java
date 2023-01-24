@@ -60,12 +60,15 @@ public class ProvinceService {
 
     Logger logger = LoggerFactory.getLogger(ProvinceService.class);
 
-    public Province updatePrivince(int provinceId, Province province) {
+    public Province updateProvince(int provinceId, Province province) {
         Province oldProvince = getProvinceById(provinceId);
 
         oldProvince.setName(province.getName());
 
         return provinceRepository.saveAndFlush(oldProvince);
 
+    }
+    public Province updateProvince(Province province){
+        return provinceRepository.saveAndFlush(province);
     }
 }
