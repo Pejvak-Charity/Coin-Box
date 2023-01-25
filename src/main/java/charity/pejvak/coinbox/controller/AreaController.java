@@ -34,7 +34,7 @@ public class AreaController {
     private final ZoneService zoneService;
 
     @GetMapping("/provinces")
-    public ResponseEntity<Map<String, Object>> getProvinces(@RequestParam(required = false, defaultValue = "1") int page,
+    public ResponseEntity<Map<String, Object>> getProvinces(@RequestParam(required = false, defaultValue = "0") int page,
                                                             @RequestParam(required = false, defaultValue = "50") int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -65,7 +65,7 @@ public class AreaController {
 
     @GetMapping("/provinces/{provinceId}/cities")
     public ResponseEntity<Map<String, Object>> getCities(@PathVariable(name = "provinceId") int provinceId,
-                                                         @RequestParam(required = false, defaultValue = "1") int page,
+                                                         @RequestParam(required = false, defaultValue = "0") int page,
                                                          @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Province province = provinceService.getProvinceById(provinceId);
 
@@ -130,7 +130,7 @@ public class AreaController {
     @GetMapping("/provinces/{provinceId}/cities/{cityId}/zones")
     public ResponseEntity<Map<String, Object>> getZones(@PathVariable(name = "provinceId") int provinceId,
                                                         @PathVariable(name = "cityId") long cityId,
-                                                        @RequestParam(required = false, defaultValue = "1") int page,
+                                                        @RequestParam(required = false, defaultValue = "0") int page,
                                                         @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Province province = provinceService.getProvinceById(provinceId);
         City city = cityService.getCity(cityId);
