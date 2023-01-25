@@ -24,7 +24,7 @@ public class Province {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "province",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "province",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private final Set<City> cities = new HashSet<>();
 
     public void addCity(City city){

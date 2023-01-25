@@ -25,7 +25,7 @@ public class City {
     @JsonIgnore
     private Province province;
 
-    @OneToMany(mappedBy = "city")
+    @OneToMany(mappedBy = "city",fetch = FetchType.EAGER)
     private final Set<Zone> zones = new HashSet<>();
 
     public void addZone(Zone zone){

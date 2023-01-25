@@ -60,8 +60,6 @@ public class Zone {
         return city;
     }
 
-
-    @Deprecated()
     public void setCity(City city) {
         this.city = city;
     }

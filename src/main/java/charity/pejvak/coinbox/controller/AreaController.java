@@ -82,7 +82,9 @@ public class AreaController {
                                         @PathVariable(name = "cityId") long cityId) {
         City city = provinceService.getProvinceById(provinceId)
                 .getCities().stream()
-                .filter(cityFilter -> cityFilter.getId() == cityId).findFirst().orElse(null);
+                .filter(cityFilter -> cityFilter.getId() == cityId).findFirst().orElseThrow(() -> {
+                    throw new NoSuchCityException("City not found with provinceId: "+provinceId+" and cityId: "+cityId);
+                });
 
         return ResponseEntity.ok(city);
     }
@@ -116,20 +118,22 @@ public class AreaController {
     }
 
     @DeleteMapping("/provinces/{provinceId}/cities/{cityId}")
-    public ResponseEntity<Province> deleteCity(@PathVariable(name = "provinceId") int provinceId,
+    public ResponseEntity<City> deleteCity(@PathVariable(name = "provinceId") int provinceId,
                                                @PathVariable(name = "cityId") int cityId) {
         Province province = provinceService.getProvinceById(provinceId);
 
         province.getCities().removeIf(city -> city.getId() == cityId);
 
-        province = provinceService.updateProvince(province);
+        provinceService.updateProvince(province);
 
-        return ResponseEntity.ok(province);
+        City city = cityService.deleteCity(cityId);
+
+        return ResponseEntity.ok(city);
     }
 
     @GetMapping("/provinces/{provinceId}/cities/{cityId}/zones")
     public ResponseEntity<Map<String, Object>> getZones(@PathVariable(name = "provinceId") int provinceId,
-                                                        @PathVariable(name = "cityId") long cityId,
+                                                        @PathVariable(name = "cityId") int cityId,
                                                         @RequestParam(required = false, defaultValue = "0") int page,
                                                         @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Province province = provinceService.getProvinceById(provinceId);
@@ -148,7 +152,9 @@ public class AreaController {
         Zone zone = provinceService.getProvinceById(provinceId).getCities()
                 .stream().filter(city -> city.getId() == cityId).findFirst().orElseThrow(() -> {
                     throw new NoSuchCityException();
-                }).getZones().stream().filter(zoneFilter -> zoneFilter.getId() == zoneId).findFirst().orElse(null);
+                }).getZones().stream().filter(zoneFilter -> zoneFilter.getId() == zoneId).findFirst().orElseThrow(() -> {
+                    throw new NoSuchZoneExistsException("No Such Zone exists in ths city with zoneId: "+zoneId);
+                });
 
         return ResponseEntity.ok(zone);
     }
@@ -165,9 +171,8 @@ public class AreaController {
         Zone zone = new Zone();
         zone.setName(zoneRequest.getName());
         zone.setDescription(zoneRequest.getDescription());
-
-        city.addZone(zone);
-        cityService.updateCity(city);
+        zone.setCity(city);
+        zone = zoneService.addZone(zone);
         return zone;
 
     }
@@ -199,6 +204,30 @@ public class AreaController {
         zone = zoneService.updateZone(zoneId, zone);
 
         return zone;
+    }
+
+    @DeleteMapping("/provinces/{provinceId}/cities/{cityId}/zones/{zoneId}")
+    public Zone deleteZone(@PathVariable(name = "provinceId") int provinceId,
+                       @PathVariable(name = "cityId") long cityId,
+                       @PathVariable(name = "zoneId") long zoneId) {
+
+        Zone zone = provinceService.getProvinceById(provinceId)
+                .getCities()
+                .stream()
+                .filter(cityFilter -> cityFilter.getId() == cityId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchCityException();
+                })
+                .getZones().stream().filter(zoneFilter -> zoneFilter.getId() == zoneId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchZoneExistsException("No Such zone exists with id: " + zoneId);
+                });
+
+
+        return zoneService.deleteZone(zone.getId());
+
     }
 
 

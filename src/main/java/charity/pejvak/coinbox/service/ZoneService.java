@@ -25,12 +25,9 @@ public class ZoneService {
         return zoneRepository.saveAndFlush(zone);
     }
 
-    public List<Zone> getZones() {
-        return zoneRepository.findAll();
-    }
 
     public Page<Zone> getZones(Province province , City city, Pageable pageable){
-        return zoneRepository.findAllByCityProvince(province,city,pageable);
+        return zoneRepository.findAllByCity_ProvinceIdAndCityId(province.getId(),city.getId(),pageable);
     }
 
     public Zone deleteZone(long zoneId) {

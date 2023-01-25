@@ -16,6 +16,8 @@ public class Error {
     }
 
     private int code;
+
+    private int internalCode=100;
     private String message;
     private LocalDateTime localDateTime;
 
