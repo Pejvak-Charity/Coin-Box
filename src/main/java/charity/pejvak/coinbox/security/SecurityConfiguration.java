@@ -31,7 +31,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/hi","/actuator/**","/api/v1.0/login/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/**","/hi","/actuator/**","/api/v1.0/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
