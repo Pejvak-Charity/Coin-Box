@@ -2,6 +2,7 @@ package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.UserRequest;
 import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.service.AddressService;
 import charity.pejvak.coinbox.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+
 
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getUsers(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "50") int pageSize) {
@@ -49,6 +51,7 @@ public class UserController {
     public ResponseEntity<User> deleteUser(@PathVariable long userId) {
         return ResponseEntity.ok(userService.deleteUser(userId));
     }
+
 
     private Map<String, Object> toResponse(Page<?> page) {
         Map<String, Object> response = new HashMap<>();

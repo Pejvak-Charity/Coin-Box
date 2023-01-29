@@ -9,9 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AddressRepository extends JpaRepository<Address,Long> {
-    Page<Address> findAllByCity(City city, Pageable pageable);
-    Page<Address> findAllByCityAndZone(City city, Zone zone,Pageable pageable);
     Page<Address> findAllByUser(User user,Pageable pageable);
+
+    Optional<Address> findByUser_IdAndId(long userId, long addressId);
 }

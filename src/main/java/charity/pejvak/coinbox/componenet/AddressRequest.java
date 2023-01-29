@@ -1,19 +1,18 @@
 package charity.pejvak.coinbox.componenet;
 
-import charity.pejvak.coinbox.model.enums.CoinBoxType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CoinBoxRequest {
-
-    private String name;
-    private String size;
-    private CoinBoxType type;
-
+public class AddressRequest {
+    private int provinceId;
+    private int cityId;
+    private int zoneId;
+    private String text;
+    private String zipCode;
 }

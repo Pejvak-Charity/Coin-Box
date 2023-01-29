@@ -52,15 +52,9 @@ public class UserService implements UserDetailsService {
         });
     }
 
-    public User updateUser(long userId, User user) {
-        User oldUser = userRepository.findById(userId).orElseThrow(() -> {
-            throw new UserNotFoundException();
-        });
 
-        oldUser.setFirstName(user.getFirstName());
-        oldUser.setLastName(user.getLastName());
-        oldUser.setNationalCode(user.getNationalCode());
-        return userRepository.saveAndFlush(oldUser);
+    public void updateUser(User user) {
+         userRepository.saveAndFlush(user);
     }
 
     public Page<User> getUsers(Pageable pageable) {

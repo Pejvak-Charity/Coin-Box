@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity(name = "User")
-@Table(name = "_User",uniqueConstraints = {
-        @UniqueConstraint(name = "unique_nationalCode",columnNames =
+@Table(name = "_User", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_nationalCode", columnNames =
                 "national_code"),
-        @UniqueConstraint(name = "unique_phoneNumber",columnNames =
+        @UniqueConstraint(name = "unique_phoneNumber", columnNames =
                 "phone_number")
 })
 @Data
@@ -31,9 +31,9 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @SequenceGenerator(name = "UserId",sequenceName = "UserId",
+    @SequenceGenerator(name = "UserId", sequenceName = "UserId",
             allocationSize = 1)
-    @GeneratedValue(generator = "UserId",strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "UserId", strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
@@ -50,7 +50,7 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email = "email";
 
-    @Column(name = "phone_number" , nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @Column(name = "national_code")
@@ -60,13 +60,16 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<Address> addresses = new HashSet<>();
 
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<UserOTP> userOTPS = new HashSet<>();
-
 
 
     @Override

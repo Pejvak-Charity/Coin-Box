@@ -22,8 +22,8 @@ public class CityService {
         return cityRepository.findAllByProvince(province,pageable);
     }
 
-    public City getCity(long cityId){
-        return cityRepository.findById(cityId).orElseThrow(() -> {
+    public City getCity(int provinceId,long cityId){
+        return cityRepository.findByProvinceIdAndId(provinceId,cityId).orElseThrow(() -> {
             throw new NoSuchCityException();
         });
     }
@@ -32,15 +32,6 @@ public class CityService {
         return cityRepository.saveAndFlush(city);
     }
 
-    public City updateCity(long cityId, City city) {
-        City oldCity = cityRepository.findById(cityId).orElseThrow(() -> {
-            throw new NoSuchCityException();
-        });
-
-        oldCity.setName(city.getName());
-
-        return cityRepository.saveAndFlush(oldCity);
-    }
 
     public City deleteCity(long cityId) {
         City city = cityRepository.findById(cityId).orElseThrow(() -> {
@@ -49,15 +40,5 @@ public class CityService {
         cityRepository.delete(city);
         return city;
     }
-    public City addZone(long cityId, Zone zone){
-        City city = cityRepository.findById(cityId).orElseThrow(() -> {throw new NoSuchCityException();});
-        city.addZone(zone);
 
-        return cityRepository.saveAndFlush(city);
-
-    }
-
-    public City updateCity(City city) {
-        return cityRepository.saveAndFlush(city);
-    }
 }

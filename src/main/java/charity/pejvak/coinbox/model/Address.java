@@ -1,5 +1,6 @@
 package charity.pejvak.coinbox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity(name = "Address")
@@ -11,6 +12,7 @@ public class Address {
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
 

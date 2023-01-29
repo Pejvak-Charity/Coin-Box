@@ -1,20 +1,11 @@
 package charity.pejvak.coinbox.componenet;
 
-import charity.pejvak.coinbox.model.Address;
 import charity.pejvak.coinbox.model.enums.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

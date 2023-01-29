@@ -19,7 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1.0")
@@ -137,7 +138,7 @@ public class AreaController {
                                                         @RequestParam(required = false, defaultValue = "0") int page,
                                                         @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Province province = provinceService.getProvinceById(provinceId);
-        City city = cityService.getCity(cityId);
+        City city = cityService.getCity(province.getId(),cityId);
 
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Zone> zones = zoneService.getZones(province,city,pageable);

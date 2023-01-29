@@ -27,6 +27,13 @@ public class AddressService {
         });
     }
 
+    public Address getAddress(long userId, long addressId) {
+        return addressRepository.findByUser_IdAndId(userId, addressId).orElseThrow(() -> {
+            throw new NoSuchAddressFoundException();
+        });
+    }
+
+
     public Address addAddress(Address address) {
         return addressRepository.saveAndFlush(address);
     }
@@ -43,8 +50,8 @@ public class AddressService {
         return addressRepository.saveAndFlush(oldAddress);
     }
 
-    public Address deleteAddress(long id) {
-        Address address = getAddress(id);
+    public Address deleteAddress(long userId, long addressId) {
+        Address address = getAddress(userId, addressId);
         addressRepository.delete(address);
         return address;
     }

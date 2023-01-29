@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ZoneService {
     private final ZoneRepository zoneRepository;
@@ -26,8 +24,14 @@ public class ZoneService {
     }
 
 
-    public Page<Zone> getZones(Province province , City city, Pageable pageable){
-        return zoneRepository.findAllByCity_ProvinceIdAndCityId(province.getId(),city.getId(),pageable);
+    public Page<Zone> getZones(Province province, City city, Pageable pageable) {
+        return zoneRepository.findAllByCity_ProvinceIdAndCityId(province.getId(), city.getId(), pageable);
+    }
+
+    public Zone getZone(int provinceId, long cityId, int zoneId) {
+        return zoneRepository.findByIdAndCity_IdAndCity_Province_Id(zoneId, cityId, provinceId).orElseThrow(() -> {
+            throw new NoSuchZoneExistsException("Zone not found in this city and province");
+        });
     }
 
     public Zone deleteZone(long zoneId) {
