@@ -1,32 +1,32 @@
-version: "1.1"
-services:
-  db:
-    container_name: db
-    hostname: DB_HOST
-    image: postgres:latest
-    user: postgres
-    ports:
-      - "5432:5432"
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=coinboxdb
-    volumes:
-      - dbvolume:/var/lib/postgresql/data
-  backend:
-    build: ./
-    container_name: backend
-    hostname: backend_host
-    environment:
-      - DB_SERVER=db
-      - POSTGRES_DB=coinboxdb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-    ports:
-      - "80:8080"
-    depends_on:
-      - db
-volumes:
-  dbvolume:
-    external: true
+#version: "1.1"
+#services:
+#  db:
+#    container_name: db
+#    hostname: DB_HOST
+#    image: postgres:latest
+#    user: postgres
+#    ports:
+#      - "5432:5432"
+#    restart: unless-stopped
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=root
+#      - POSTGRES_DB=coinboxdb
+#    volumes:
+#      - dbvolume:/var/lib/postgresql/data
+#  backend:
+#    build: ./
+#    container_name: backend
+#    hostname: backend_host
+#    environment:
+#      - DB_SERVER=db
+#      - POSTGRES_DB=coinboxdb
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=root
+#    ports:
+#      - "80:8080"
+#    depends_on:
+#      - db
+#volumes:
+#  dbvolume:
+#    external: true

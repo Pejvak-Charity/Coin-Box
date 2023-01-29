@@ -1,0 +1,19 @@
+{
+  "platform": "docker",
+  "app": "pejvak",
+  "port": 8080,
+  "disks": [
+    {
+      "name": "app",
+      "mountTo": "/app"
+    },
+    {
+      "name": "mavenlocal",
+      "mountTo": "/root/.m2/repository"
+    },
+    {
+      "name": "temp",
+      "mountTo": "/tmp"
+    }
+  ]
+}
