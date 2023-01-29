@@ -63,7 +63,14 @@ public class UserService implements UserDetailsService {
         return userRepository.saveAndFlush(oldUser);
     }
 
-    public Page<User> getUsers(Pageable pageable){
+    public Page<User> getUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    public User deleteUser(long userId) {
+        User user = getUser(userId);
+        userRepository.delete(user);
+        return user;
+
     }
 }

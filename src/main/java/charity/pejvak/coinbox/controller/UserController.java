@@ -45,6 +45,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<User> deleteUser(@PathVariable long userId) {
+        return ResponseEntity.ok(userService.deleteUser(userId));
+    }
 
     private Map<String, Object> toResponse(Page<?> page) {
         Map<String, Object> response = new HashMap<>();
