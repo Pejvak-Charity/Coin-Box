@@ -27,7 +27,7 @@ public class LoginController {
 
     @GetMapping("")
     public ResponseEntity<String> getTestMessage(){
-        return ResponseEntity.ok("hi ali");
+        return ResponseEntity.ok("Let's explore Coin Box Project !");
     }
     @PostMapping("/send-otp")
     public ResponseEntity<OTPResponse> getOTP(@RequestBody OTPRequest otpRequest, HttpServletRequest httpRequest) {
@@ -37,8 +37,8 @@ public class LoginController {
 
     @PostMapping("")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authRequest) {
-        userOtpService.checkOTP(authRequest.getOtp(), authRequest.getPhoneNumber());
-        User user = userService.getUserByPhoneNumber(authRequest.getPhoneNumber());
-        return ResponseEntity.ok(AuthenticationResponse.builder().token(jwtService.generateToken(user)).build());
+        userOtpService.checkAndDeleteOTP(authRequest.getOtp(), authRequest.getPhoneNumber());
+        User user = userService.addOrGetUserByPhoneNumber(authRequest.getPhoneNumber());
+        return ResponseEntity.ok(AuthenticationResponse.builder().token(jwtService.generateToken(user)).userId(user.getId()).build());
     }
 }

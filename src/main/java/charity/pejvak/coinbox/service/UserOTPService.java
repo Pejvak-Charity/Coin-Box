@@ -22,7 +22,7 @@ public class UserOTPService {
     private final static int OTP_EXP_MINUTES = 3;
 
     public UserOTP getOTP(String phoneNumber, String ip) {
-        User user = userService.getUserByPhoneNumber(phoneNumber);
+        User user = userService.addOrGetUserByPhoneNumber(phoneNumber);
         if (user == null) {
             user = new User();
             user.setRole(Role.USER);
@@ -39,7 +39,7 @@ public class UserOTPService {
 
     }
 
-    public void checkOTP(String otp, String phoneNumber) {
+    public void checkAndDeleteOTP(String otp, String phoneNumber) {
         UserOTP userOTP = userOtpRepository.findByOtpAndPhoneNumber(otp, phoneNumber).orElseThrow(() -> {
             throw new NoSuchUserOTPExistsException();
         });
