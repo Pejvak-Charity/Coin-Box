@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity(name = "CoinBoxRequest")
 @Table(name = "coin_box_request")
-public class CoinBoxRequest {
+public class CoinBoxUserRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

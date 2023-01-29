@@ -2,6 +2,7 @@ package charity.pejvak.coinbox.model;
 
 
 import charity.pejvak.coinbox.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,9 +41,11 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "username")
+    @JsonIgnore
     private String username = "username";
 
     @Column(name = "password")
+    @JsonIgnore
     private String password = "password";
     @Column(name = "email")
     private String email = "email";
@@ -54,12 +57,14 @@ public class User implements UserDetails {
     private String nationalCode;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Address> addresses = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<UserOTP> userOTPS = new HashSet<>();
 
 

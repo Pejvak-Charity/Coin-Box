@@ -2,6 +2,7 @@ version: "1.1"
 services:
   db:
     container_name: db
+    hostname: DB_HOST
     image: postgres:latest
     user: postgres
     ports:
@@ -16,6 +17,7 @@ services:
   backend:
     build: ./
     container_name: backend
+    hostname: backend_host
     environment:
       - DB_SERVER=db
       - POSTGRES_DB=coinboxdb

@@ -32,7 +32,11 @@ public class CoinBox {
 
     @OneToMany(mappedBy = "coinBox")
     @JsonIgnore
-    private Set<CoinBoxRequest> requests = new HashSet<>();
+    private Set<CoinBoxUserRequest> requests = new HashSet<>();
+
+    @OneToMany(mappedBy = "coinBox")
+    @JsonIgnore
+    private Set<CoinBoxImage> coinBoxImages = new HashSet<>();
 
     public CoinBox() {
     }
@@ -84,11 +88,19 @@ public class CoinBox {
         this.status = status;
     }
 
-    public Set<CoinBoxRequest> getRequests() {
+    public Set<CoinBoxUserRequest> getRequests() {
         return requests;
     }
 
-    public void setRequests(Set<CoinBoxRequest> requests) {
+    public void setRequests(Set<CoinBoxUserRequest> requests) {
         this.requests = requests;
+    }
+
+    public Set<CoinBoxImage> getCoinBoxImages() {
+        return coinBoxImages;
+    }
+
+    public void addImage(CoinBoxImage coinBoxImages) {
+        this.coinBoxImages.add(coinBoxImages);
     }
 }
