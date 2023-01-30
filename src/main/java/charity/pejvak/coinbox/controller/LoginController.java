@@ -5,7 +5,6 @@ import charity.pejvak.coinbox.componenet.AuthenticationResponse;
 import charity.pejvak.coinbox.componenet.OTPRequest;
 import charity.pejvak.coinbox.componenet.OTPResponse;
 import charity.pejvak.coinbox.model.User;
-import charity.pejvak.coinbox.model.UserOTP;
 import charity.pejvak.coinbox.service.JWTService;
 import charity.pejvak.coinbox.service.UserOTPService;
 import charity.pejvak.coinbox.service.UserService;
@@ -31,7 +30,7 @@ public class LoginController {
     }
     @PostMapping("/send-otp")
     public ResponseEntity<OTPResponse> getOTP(@RequestBody OTPRequest otpRequest, HttpServletRequest httpRequest) {
-        UserOTP userOTP = userOtpService.getOTP(otpRequest.getPhoneNumber(), httpRequest.getRemoteAddr());
+      userOtpService.getOTP(otpRequest.getPhoneNumber(), httpRequest.getRemoteAddr());
         return ResponseEntity.ok(OTPResponse.builder().message("OTP sent successfully !").build());
     }
 
@@ -39,6 +38,10 @@ public class LoginController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authRequest) {
         userOtpService.checkAndDeleteOTP(authRequest.getOtp(), authRequest.getPhoneNumber());
         User user = userService.addOrGetUserByPhoneNumber(authRequest.getPhoneNumber());
-        return ResponseEntity.ok(AuthenticationResponse.builder().token(jwtService.generateToken(user)).userId(user.getId()).build());
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                                                                .token(jwtService.generateToken(user))
+                                                                .userId(user.getId())
+                .role(user.getRole()).build();
+        return ResponseEntity.ok(response);
     }
 }

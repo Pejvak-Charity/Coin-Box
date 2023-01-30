@@ -21,7 +21,7 @@ public class UserOTPService {
 
     private final static int OTP_EXP_MINUTES = 3;
 
-    public UserOTP getOTP(String phoneNumber, String ip) {
+    public void getOTP(String phoneNumber, String ip) {
         User user = userService.addOrGetUserByPhoneNumber(phoneNumber);
         if (user == null) {
             user = new User();
@@ -35,7 +35,7 @@ public class UserOTPService {
 
         // todo send otp
 
-        return userOtpRepository.saveAndFlush(userOTP);
+        userOtpRepository.saveAndFlush(userOTP);
 
     }
 
