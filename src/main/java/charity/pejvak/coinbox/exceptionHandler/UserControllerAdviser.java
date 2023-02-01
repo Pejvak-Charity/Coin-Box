@@ -1,6 +1,7 @@
 package charity.pejvak.coinbox.exceptionHandler;
 
 import charity.pejvak.coinbox.componenet.Error;
+import charity.pejvak.coinbox.exception.NoSuchUserExistsException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,6 +28,16 @@ public class UserControllerAdviser {
                         .localDateTime(LocalDateTime.now())
                         .internalCode(422)
                         .build());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchUserExistsException.class)
+    public ResponseEntity<Error> userNotFoundHandler(NoSuchUserExistsException e){
+        Error error = Error.builder().code(404).localDateTime(LocalDateTime.now())
+                .internalCode(404)
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(404).body(error);
     }
 
 }
