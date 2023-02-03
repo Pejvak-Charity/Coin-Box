@@ -39,4 +39,12 @@ public class CoinBoxUserRequestController {
     public ResponseEntity updateStatus(@PathVariable long userId) {
         return null;
     }
+
+    @GetMapping("/{userId}/coin-box-requests/{requestId}/history")
+    public ResponseEntity getRequestHistory(
+            @PathVariable long userId,
+            @PathVariable long requestId
+    ) {
+        return null;
+    }
 }

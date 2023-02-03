@@ -24,7 +24,8 @@ public class CoinBoxController {
     final private CoinBoxService coinBoxService;
 
     @GetMapping("/coin-boxes")
-    public ResponseEntity<Map<String, Object>> getCoinBoxes(@RequestParam(required = false, defaultValue = "0") int page, @RequestParam(required = false, defaultValue = "50") int pageSize) {
+    public ResponseEntity<Map<String, Object>> getCoinBoxes(@RequestParam(required = false, defaultValue = "0") int page,
+                                                            @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<CoinBox> coinBoxes = coinBoxService.getCoinBoxes(pageable);
 
