@@ -26,4 +26,8 @@ public class CoinBoxType {
     @OneToMany(mappedBy = "type")
     private Set<CoinBox> coinBoxes = new HashSet<>();
 
+    public void addImage(Image image){
+        images.add(image);
+    }
+
 }

@@ -29,4 +29,7 @@ public class CoinBoxTypeService {
         return null;
     }
 
+    public void updateCoinBoxType(CoinBoxType coinBoxType) {
+
+    }
 }

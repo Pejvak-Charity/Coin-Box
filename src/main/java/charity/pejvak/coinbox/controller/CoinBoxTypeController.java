@@ -1,8 +1,13 @@
 package charity.pejvak.coinbox.controller;
 
+import charity.pejvak.coinbox.componenet.CoinBoxTypeResponse;
+import charity.pejvak.coinbox.componenet.ImageResponse;
+import charity.pejvak.coinbox.exception.NoSuchImageFoundException;
 import charity.pejvak.coinbox.model.CoinBoxType;
 import charity.pejvak.coinbox.model.Image;
 import charity.pejvak.coinbox.service.CoinBoxTypeService;
+import charity.pejvak.coinbox.service.ImageService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,10 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1.0")
@@ -22,6 +25,8 @@ import java.util.Map;
 public class CoinBoxTypeController {
 
     private final CoinBoxTypeService coinBoxTypeService;
+
+    private final ImageService imageService;
 
 
     @GetMapping("/coin-box-types")
@@ -33,35 +38,103 @@ public class CoinBoxTypeController {
     }
 
     @PostMapping("/coin-box-types")
-    public ResponseEntity<CoinBoxType> addNewCoinBoxType(@RequestParam(name = "file") MultipartFile[] request,@RequestParam(name = "test") String s){
+    public ResponseEntity<CoinBoxTypeResponse> addNewCoinBoxType(
+            @RequestParam(name = "name") @NotBlank String name,
+            @RequestParam(name = "size") @NotBlank String size,
+            @RequestParam(name = "file") MultipartFile[] multipartFiles
+    ) {
 
-        System.out.println("---------");
-        for (MultipartFile multipartFile : request) {
-            System.out.println("multipartFile = " + multipartFile.getName());
-            System.out.println(multipartFile.getOriginalFilename());
-        }
-        System.out.println("-------------");
-        System.out.println("s = " + s);
-        List<Image> images = new ArrayList<>();
+        Set<Image> images = Arrays.stream(multipartFiles).map(imageService::addNewImage).collect(Collectors.toSet());
+        CoinBoxType coinBoxType = new CoinBoxType();
+        coinBoxType.setName(name);
+        coinBoxType.setSize(size);
+        coinBoxType.setImages(images);
 
+        coinBoxType = coinBoxTypeService.addCoinBoxType(coinBoxType);
 
-//
-//
-//        CoinBoxType coinBoxType = new CoinBoxType();
-//        coinBoxType.set
-//        CoinBoxType coinBoxType = coinBoxTypeService.addCoinBoxType()
-        return null;
+        return ResponseEntity.ok(coinBoxTypeDTO(coinBoxType));
+    }
+
+    @GetMapping("/coin-box-types/{coinBoxTypeId}")
+    public ResponseEntity<CoinBoxTypeResponse> getCoinBoxType(@PathVariable long coinBoxTypeId) {
+        CoinBoxType boxType = coinBoxTypeService.getCoinBoxType(coinBoxTypeId);
+        return ResponseEntity.ok(coinBoxTypeDTO(boxType));
+    }
+
+    @GetMapping("/coin-box-types/{coinBoxTypeId}/images")
+    public ResponseEntity<List<ImageResponse>> getCoinBoxImages(@PathVariable long coinBoxTypeId) {
+
+        CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxTypeId);
+        List<ImageResponse> images = coinBoxType.getImages().stream().map(this::imageDTO).toList();
+        return ResponseEntity.ok(images);
+    }
+
+    @PostMapping("/coin-box-types/{coinBoxTypeId}/images")
+    public ResponseEntity<ImageResponse> addCoinBoxTypeImage(
+            @PathVariable long coinBoxTypeId,
+            @RequestParam("file") MultipartFile multipartFile
+    ) {
+        CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxTypeId);
+        Image image = imageService.addNewImage(multipartFile);
+        coinBoxType.addImage(image);
+        coinBoxTypeService.updateCoinBoxType(coinBoxType);
+
+        return ResponseEntity.ok(imageDTO(image));
+    }
+
+    @GetMapping("/coin-box-types/{coinBoxTypeId}/images/{imageId}")
+    public ResponseEntity<?> getCoinBoxTypeImage(
+            @PathVariable long coinBoxTypeId,
+            @PathVariable long imageId
+    ) {
+        Image image = coinBoxTypeService.getCoinBoxType(coinBoxTypeId)
+                .getImages().stream().filter(imageFilter -> imageFilter.getId() == imageId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchImageFoundException();
+                });
+        return ResponseEntity.ok(imageDTO(image));
+    }
+    @DeleteMapping("/coin-box-types/{coinBoxTypeId}/images/{imageId}")
+    public ResponseEntity<?> deleteCoinBoxTypeImage(
+            @PathVariable long coinBoxTypeId,
+            @PathVariable long imageId
+    ) {
+        Image image = coinBoxTypeService.getCoinBoxType(coinBoxTypeId)
+                .getImages().stream().filter(imageFilter -> imageFilter.getId() == imageId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchImageFoundException();
+                });
+        imageService.deleteImage(image.getId());
+        return ResponseEntity.ok(imageDTO(image));
     }
 
 
-
-    private Map<String, Object> toResponse(Page<?> page) {
+    private Map<String, Object> toResponse(Page<CoinBoxType> page) {
         Map<String, Object> response = new HashMap<>();
-        response.put("content", page.getContent());
+        response.put("content", page.getContent().stream().map(this::coinBoxTypeDTO).toList());
         response.put("page", page.getPageable().getPageNumber());
         response.put("pageSize", page.getPageable().getPageSize());
         response.put("totalPages", page.getTotalPages());
         response.put("totalElements", page.getTotalElements());
         return response;
+    }
+
+    private CoinBoxTypeResponse coinBoxTypeDTO(CoinBoxType coinBoxType) {
+        CoinBoxTypeResponse coinBoxTypeResponse = new CoinBoxTypeResponse();
+        coinBoxTypeResponse.setId(coinBoxType.getId());
+        coinBoxTypeResponse.setName(coinBoxType.getName());
+        coinBoxTypeResponse.setSize(coinBoxType.getSize());
+        List<ImageResponse> paths = coinBoxType.getImages().stream().map(this::imageDTO).toList();
+        coinBoxTypeResponse.setImages(paths);
+        return coinBoxTypeResponse;
+    }
+
+    private ImageResponse imageDTO(Image image) {
+        return ImageResponse.builder()
+                .id(image.getId())
+                .downloadURL(imageService.getDownloadPath(image))
+                .build();
     }
 }
