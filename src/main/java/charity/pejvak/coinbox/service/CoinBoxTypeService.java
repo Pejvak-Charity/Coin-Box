@@ -24,4 +24,9 @@ public class CoinBoxTypeService {
         });
     }
 
+    public CoinBoxType addCoinBoxType(CoinBoxType coinBoxType){
+
+        return null;
+    }
+
 }

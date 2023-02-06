@@ -33,7 +33,7 @@ public class CoinBoxTypeController {
     }
 
     @PostMapping("/coin-box-types")
-    public ResponseEntity<CoinBoxType> addNewCoinBox(@RequestParam(name = "file") MultipartFile[] request,@RequestParam(name = "test") String s){
+    public ResponseEntity<CoinBoxType> addNewCoinBoxType(@RequestParam(name = "file") MultipartFile[] request,@RequestParam(name = "test") String s){
 
         System.out.println("---------");
         for (MultipartFile multipartFile : request) {
