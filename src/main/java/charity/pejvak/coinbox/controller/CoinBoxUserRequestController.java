@@ -35,7 +35,7 @@ public class CoinBoxUserRequestController {
         return null;
     }
 
-    @PostMapping("/{userId}/coin-box-requests")
+    @PutMapping("/{userId}/coin-box-requests")
     public ResponseEntity updateStatus(@PathVariable long userId) {
         return null;
     }

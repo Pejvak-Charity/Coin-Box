@@ -29,8 +29,8 @@ public class CoinBoxService {
             throw new NoSuchCoinBoxException();
         });
 
-        oldCoinBox.setName(coinBox.getName());
-        oldCoinBox.setSize(coinBox.getSize());
+//        oldCoinBox.setName(coinBox.getName());
+//        oldCoinBox.setSize(coinBox.getSize());
         oldCoinBox.setStatus(coinBox.getStatus());
 
         return coinBoxRepository.saveAndFlush(oldCoinBox);
@@ -56,16 +56,18 @@ public class CoinBoxService {
     }
 
     public Set<CoinBoxImage> getCoinBoxImages(int coinBoxId) {
-        return coinBoxRepository.findById(coinBoxId).orElseThrow(() -> {
-            throw new NoSuchCoinBoxException();
-        }).getCoinBoxImages();
+//        return coinBoxRepository.findById(coinBoxId).orElseThrow(() -> {
+//            throw new NoSuchCoinBoxException();
+//        }).getCoinBoxImages();
+
+    return null;
     }
 
     public CoinBoxImage addCoinBoxImage(int coinBoxId, CoinBoxImage coinBoxImage) {
         CoinBox coinBox = getCoinBox(coinBoxId);
         coinBoxImage = coinBoxImageRepository.saveAndFlush(coinBoxImage);
 
-        coinBox.addImage(coinBoxImage);
+//        coinBox.addImage(coinBoxImage);
         coinBoxRepository.saveAndFlush(coinBox);
 
         return coinBoxImage;

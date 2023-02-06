@@ -39,7 +39,6 @@ public class CoinBoxUserRequestLog {
     private CoinBoxStatus oldStatus;
 
     @Column(name = "newCoinBoxRequestJSON")
-    @Enumerated(EnumType.STRING)
     private String newCoinBoxRequestJSON;
 
 

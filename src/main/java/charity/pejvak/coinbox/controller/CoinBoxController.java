@@ -36,9 +36,9 @@ public class CoinBoxController {
     public ResponseEntity<CoinBox> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
         CoinBox coinBox = new CoinBox();
 
-        coinBox.setName(coinBoxRequest.getName());
-        coinBox.setType(coinBoxRequest.getType());
-        coinBox.setSize(coinBoxRequest.getSize());
+//        coinBox.setName(coinBoxRequest.getName());
+//        coinBox.setType(coinBoxRequest.getType());
+//        coinBox.setSize(coinBoxRequest.getSize());
         coinBox.setStatus(CoinBoxStatus.ACTIVE.getCode());
         coinBox = coinBoxService.addCoinBox(coinBox);
         return ResponseEntity.ok(coinBox);
