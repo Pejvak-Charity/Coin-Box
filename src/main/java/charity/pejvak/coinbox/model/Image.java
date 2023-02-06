@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 public class Image {
 
     @Id
-    @Column(name = "id",insertable = false,nullable = false,updatable = false)
+    @Column(name = "id", insertable = false, nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "image_path")
     private String path;
 
     @ManyToOne()
-    @JoinColumn(name = "coin-box-type-id",referencedColumnName = "id")
+    @JoinColumn(name = "coin-box-type-id", referencedColumnName = "id")
     private CoinBoxType coinBoxType;
 
 }

@@ -3,7 +3,10 @@ package charity.pejvak.coinbox.controller;
 import charity.pejvak.coinbox.componenet.AddressRequest;
 import charity.pejvak.coinbox.model.*;
 import charity.pejvak.coinbox.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +30,11 @@ public class AddressController {
 
     private final UserService userService;
 
+    private final Logger LOG = LoggerFactory.getLogger(AddressController.class);
 
     @GetMapping("/{userId}/addresses")
     public ResponseEntity<Map<String, Object>> getUserAddresses(
+            HttpServletRequest request,
             @PathVariable long userId,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "50") int pageSize) {
@@ -37,11 +42,15 @@ public class AddressController {
 
         Page<Address> addressPage = addressService.getUserAddresses(userId, pageable);
 
+        LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
+                 "' to '/api/v1.0/" + userId + "/addresses' at GET.getUserAddresses");
+
         return ResponseEntity.ok(toResponse(addressPage));
     }
 
     @PostMapping("/{userId}/addresses")
-    public ResponseEntity<Address> addAddress(@PathVariable long userId,
+    public ResponseEntity<Address> addAddress(HttpServletRequest request,
+                                              @PathVariable long userId,
                                               @RequestBody AddressRequest addressRequest
     ) {
         Province province = provinceService.getProvinceById(addressRequest.getProvinceId());
@@ -66,21 +75,24 @@ public class AddressController {
         user.addAddress(address);
         userService.updateUser(user);
 
+        LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
+                 "' to '/api/v1.0/" + userId + "/addresses' at POST.addAddress");
+
         return ResponseEntity.ok(address);
     }
 
     @GetMapping("/{userId}/addresses/{addressId}")
-    public ResponseEntity<Address> getUserAddress(
-            @PathVariable long userId,
-            @PathVariable long addressId,
-            @RequestBody AddressRequest addressRequest
+    public ResponseEntity<Address> getUserAddress(HttpServletRequest request,
+                                                  @PathVariable long userId,
+                                                  @PathVariable long addressId,
+                                                  @RequestBody AddressRequest addressRequest
     ) {
         Province province = provinceService.getProvinceById(addressRequest.getProvinceId());
         City city = cityService.getCity(addressRequest.getProvinceId(), addressRequest.getCityId());
         Zone zone = zoneService.getZone(province.getId(), city.getId(), addressRequest.getZoneId());
 
 
-        Address address = addressService.getAddress(userId,addressId);
+        Address address = addressService.getAddress(userId, addressId);
 
         address.setProvince(province);
         address.setCity(city);
@@ -88,21 +100,30 @@ public class AddressController {
         address.setText(addressRequest.getText());
         address.setZipCode(address.getZipCode());
 
-        return ResponseEntity.ok(addressService.updateAddress(addressId,address));
+        LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
+                 "' to '/api/v1.0/" + userId + "/addresses/" + addressId + "at GET.getUserAddress");
+
+        return ResponseEntity.ok(addressService.updateAddress(addressId, address));
     }
 
     @PutMapping("/{userId}/addresses/{addressId}")
-    public ResponseEntity<Address> updateUserAddress(
-            @PathVariable long userId,
-            @PathVariable long addressId) {
+    public ResponseEntity<Address> updateUserAddress(HttpServletRequest request,
+                                                     @PathVariable long userId,
+                                                     @PathVariable long addressId) {
+
+        LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
+                 "' to '/api/v1.0/" + userId + "/addresses/" + addressId + "at PUT.updateUserAddress");
 
         return ResponseEntity.ok(addressService.getAddress(userId, addressId));
     }
 
     @DeleteMapping("/{userId}/addresses/{addressId}")
-    public ResponseEntity<Address> deleteUserAddress(
-            @PathVariable long userId,
-            @PathVariable long addressId) {
+    public ResponseEntity<Address> deleteUserAddress(HttpServletRequest request,
+                                                     @PathVariable long userId,
+                                                     @PathVariable long addressId) {
+
+        LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
+                 "' to '/api/v1.0/" + userId + "/addresses/" + addressId + "at DELETE.deleteUserAddress");
 
         return ResponseEntity.ok(addressService.deleteAddress(userId, addressId));
     }
