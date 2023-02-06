@@ -41,7 +41,7 @@ public class CoinBoxTypeController {
     public ResponseEntity<CoinBoxTypeResponse> addNewCoinBoxType(
             @RequestParam(name = "name") @NotBlank String name,
             @RequestParam(name = "size") @NotBlank String size,
-            @RequestParam(name = "file") MultipartFile[] multipartFiles
+            @RequestParam(name = "files") MultipartFile[] multipartFiles
     ) {
 
         Set<Image> images = Arrays.stream(multipartFiles).map(imageService::addNewImage).collect(Collectors.toSet());

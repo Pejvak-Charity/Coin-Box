@@ -36,9 +36,7 @@ public class CoinBoxController {
     public ResponseEntity<CoinBox> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
         CoinBox coinBox = new CoinBox();
 
-//        coinBox.setName(coinBoxRequest.getName());
-//        coinBox.setType(coinBoxRequest.getType());
-//        coinBox.setSize(coinBoxRequest.getSize());
+        //fixme
         coinBox.setStatus(CoinBoxStatus.ACTIVE.getCode());
         coinBox = coinBoxService.addCoinBox(coinBox);
         return ResponseEntity.ok(coinBox);
@@ -60,8 +58,6 @@ public class CoinBoxController {
     public ResponseEntity<CoinBox> deleteCoinBox(@PathVariable int coinBoxId) {
         return ResponseEntity.ok(coinBoxService.deleteCoinBox(coinBoxId));
     }
-
-    //TODO complete coin box images
 
     private Map<String, Object> toResponse(Page<?> page) {
         Map<String, Object> response = new HashMap<>();
