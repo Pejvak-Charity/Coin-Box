@@ -16,5 +16,5 @@ public class CoinBoxTypeResponse {
     private Long id;
     private String name;
     private String size;
-    private List<String> imagePaths = new ArrayList<>();
+    private List<ImageResponse> images = new ArrayList<>();
 }

@@ -13,6 +13,9 @@ public class ImageService {
     public Image addNewImage(MultipartFile multipartFile) {
         return null;
     }
+
+    public void deleteImage(Long id) {
+    }
     // add
     // update
     // delete
