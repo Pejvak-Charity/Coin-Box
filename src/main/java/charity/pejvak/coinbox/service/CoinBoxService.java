@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
@@ -56,6 +57,7 @@ public class CoinBoxService {
     }
 
     public Set<CoinBoxImage> getCoinBoxImages(int coinBoxId) {
+        //fixme
 //        return coinBoxRepository.findById(coinBoxId).orElseThrow(() -> {
 //            throw new NoSuchCoinBoxException();
 //        }).getCoinBoxImages();
@@ -72,6 +74,22 @@ public class CoinBoxService {
 
         return coinBoxImage;
 
+    }
+
+    public LocalDateTime getLastCountingDate() {
+        //todo
+        // return truly data
+        return LocalDateTime.now();
+    }
+
+    public long getLastUserId() {
+        //todo complete method
+        return 1L;
+    }
+
+    public String getLastUserFullName() {
+        //todo complete this method and return user full name
+        return "علی فرقانی";
     }
 }
 

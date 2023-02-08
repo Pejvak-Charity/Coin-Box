@@ -2,6 +2,7 @@ package charity.pejvak.coinbox.controller;
 
 
 import charity.pejvak.coinbox.componenet.CoinBoxRequest;
+import charity.pejvak.coinbox.componenet.CoinBoxResponse;
 import charity.pejvak.coinbox.model.CoinBox;
 import charity.pejvak.coinbox.model.enums.CoinBoxStatus;
 import charity.pejvak.coinbox.service.CoinBoxService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping(value = "/api/v1.0")
@@ -33,44 +35,51 @@ public class CoinBoxController {
     }
 
     @PostMapping("/coin-boxes")
-    public ResponseEntity<CoinBox> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
+    public ResponseEntity<CoinBoxResponse> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
         CoinBox coinBox = new CoinBox();
 
-//        coinBox.setName(coinBoxRequest.getName());
-//        coinBox.setType(coinBoxRequest.getType());
-//        coinBox.setSize(coinBoxRequest.getSize());
+        //fixme
         coinBox.setStatus(CoinBoxStatus.ACTIVE.getCode());
         coinBox = coinBoxService.addCoinBox(coinBox);
-        return ResponseEntity.ok(coinBox);
+        return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
     @GetMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBox> getCoinBox(@PathVariable int coinBoxId) {
+    public ResponseEntity<CoinBoxResponse> getCoinBox(@PathVariable int coinBoxId) {
         CoinBox coinBox = coinBoxService.getCoinBox(coinBoxId);
-        return ResponseEntity.ok(coinBox);
+        return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
     @PutMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBox> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBox coinBox) {
+    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBox coinBox) {
         CoinBox newCoinBox = coinBoxService.updateCoinBox(coinBoxId, coinBox);
-        return ResponseEntity.ok(newCoinBox);
+        return ResponseEntity.ok(coinBoxDTO(newCoinBox));
     }
 
     @DeleteMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBox> deleteCoinBox(@PathVariable int coinBoxId) {
-        return ResponseEntity.ok(coinBoxService.deleteCoinBox(coinBoxId));
+    public ResponseEntity<CoinBoxResponse> deleteCoinBox(@PathVariable int coinBoxId) {
+        CoinBox coinBox = coinBoxService.deleteCoinBox(coinBoxId);
+        return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
-    //TODO complete coin box images
-
-    private Map<String, Object> toResponse(Page<?> page) {
+    private Map<String, Object> toResponse(Page<CoinBox> page) {
         Map<String, Object> response = new HashMap<>();
-        response.put("content", page.getContent());
+        response.put("content", page.getContent().stream().map(this::coinBoxDTO).collect(Collectors.toSet()));
         response.put("page", page.getPageable().getPageNumber());
         response.put("pageSize", page.getPageable().getPageSize());
         response.put("totalPages", page.getTotalPages());
         response.put("totalElements", page.getTotalElements());
         return response;
+    }
+    private CoinBoxResponse coinBoxDTO(CoinBox coinBox) {
+        CoinBoxResponse coinBoxResponse = new CoinBoxResponse();
+        coinBoxResponse.setId(coinBox.getId());
+        coinBoxResponse.setCode(coinBox.getCode());
+        coinBoxResponse.setManufactureDateTime(coinBox.getManufactureDate());
+        coinBoxResponse.setLastCountingDateTime(coinBoxService.getLastCountingDate());
+        coinBoxResponse.setLastUserId(coinBoxService.getLastUserId());
+        coinBoxResponse.setLastUserFullName(coinBoxService.getLastUserFullName());
+        return coinBoxResponse;
     }
 
 }
