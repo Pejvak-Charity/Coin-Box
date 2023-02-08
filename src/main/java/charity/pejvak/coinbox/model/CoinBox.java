@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class CoinBox {
     private String code;
 
     @Column(name = "manufacture-date")
-    private LocalDate manufactureDate;
+    private LocalDateTime manufactureDate;
 
 
     @Column(name = "status", nullable = false)
