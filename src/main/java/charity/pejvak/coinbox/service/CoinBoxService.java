@@ -20,11 +20,11 @@ public class CoinBoxService {
     private final CoinBoxRepository coinBoxRepository;
     private final CoinBoxImageRepository coinBoxImageRepository;
 
-    public CoinBox addCoinBox(CoinBox coinBox, long userId) {
+    public CoinBox addCoinBox(CoinBox coinBox) {
         return coinBoxRepository.saveAndFlush(coinBox);
     }
 
-    public CoinBox updateCoinBox(int id, CoinBox coinBox, long userId) {
+    public CoinBox updateCoinBox(int id, CoinBox coinBox) {
 
         CoinBox oldCoinBox = coinBoxRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchCoinBoxException();
@@ -46,11 +46,11 @@ public class CoinBoxService {
         return coinBox;
     }
 
-    public Page<CoinBox> getCoinBoxes(long userId, Pageable pageable) {
+    public Page<CoinBox> getCoinBoxes(Pageable pageable) {
         return coinBoxRepository.findAll(pageable);
     }
 
-    public CoinBox getCoinBox(long userId, int id) {
+    public CoinBox getCoinBox(int id) {
         return coinBoxRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchCoinBoxException();
         });
@@ -65,8 +65,8 @@ public class CoinBoxService {
     return null;
     }
 
-    public CoinBoxImage addCoinBoxImage(int coinBoxId, CoinBoxImage coinBoxImage,long userId) {
-        CoinBox coinBox = getCoinBox(userId, coinBoxId);
+    public CoinBoxImage addCoinBoxImage(int coinBoxId, CoinBoxImage coinBoxImage) {
+        CoinBox coinBox = getCoinBox(coinBoxId);
         coinBoxImage = coinBoxImageRepository.saveAndFlush(coinBoxImage);
 
 //        coinBox.addImage(coinBoxImage);
