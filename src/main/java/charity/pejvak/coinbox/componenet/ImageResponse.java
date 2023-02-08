@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class ImageResponse {
     private long id;
     private String downloadURL;
+    private String fileType;
+    private long fileSize;
 }
