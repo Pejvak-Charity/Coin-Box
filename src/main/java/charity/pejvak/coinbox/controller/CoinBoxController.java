@@ -25,39 +25,49 @@ public class CoinBoxController {
 
     final private CoinBoxService coinBoxService;
 
-    @GetMapping("/coin-boxes")
-    public ResponseEntity<Map<String, Object>> getCoinBoxes(@RequestParam(required = false, defaultValue = "0") int page,
+    @GetMapping("/{userId}/coin-boxes")
+    public ResponseEntity<Map<String, Object>> getCoinBoxes(@PathVariable long userId,
+            @RequestParam(required = false, defaultValue = "0") int page,
                                                             @RequestParam(required = false, defaultValue = "50") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<CoinBox> coinBoxes = coinBoxService.getCoinBoxes(pageable);
+        Page<CoinBox> coinBoxes = coinBoxService.getCoinBoxes(userId,pageable);
 
         return ResponseEntity.ok(toResponse(coinBoxes));
     }
 
-    @PostMapping("/coin-boxes")
-    public ResponseEntity<CoinBoxResponse> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
+    @PostMapping("/{userId}/coin-boxes")
+    public ResponseEntity<CoinBoxResponse> addCoinBox(
+            @PathVariable long userId,
+            @RequestBody CoinBoxRequest coinBoxRequest) {
         CoinBox coinBox = new CoinBox();
 
         //fixme
         coinBox.setStatus(CoinBoxStatus.ACTIVE.getCode());
-        coinBox = coinBoxService.addCoinBox(coinBox);
+        coinBox = coinBoxService.addCoinBox(coinBox,userId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
-    @GetMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> getCoinBox(@PathVariable int coinBoxId) {
-        CoinBox coinBox = coinBoxService.getCoinBox(coinBoxId);
+    @GetMapping("/{userId}/coin-boxes/{coinBoxId}")
+    public ResponseEntity<CoinBoxResponse> getCoinBox(
+            @PathVariable long userId,
+            @PathVariable int coinBoxId) {
+        CoinBox coinBox = coinBoxService.getCoinBox(userId,coinBoxId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
-    @PutMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBox coinBox) {
-        CoinBox newCoinBox = coinBoxService.updateCoinBox(coinBoxId, coinBox);
+    @PutMapping("/{userId}/coin-boxes/{coinBoxId}")
+    public ResponseEntity<CoinBoxResponse> updateCoinBox(
+            @PathVariable long userId,
+            @PathVariable int coinBoxId,
+            @RequestBody CoinBox coinBox) {
+        CoinBox newCoinBox = coinBoxService.updateCoinBox(coinBoxId, coinBox,userId);
         return ResponseEntity.ok(coinBoxDTO(newCoinBox));
     }
 
-    @DeleteMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> deleteCoinBox(@PathVariable int coinBoxId) {
+    @DeleteMapping("/{userId}/coin-boxes/{coinBoxId}")
+    public ResponseEntity<CoinBoxResponse> deleteCoinBox(
+            @PathVariable long userId,
+            @PathVariable int coinBoxId) {
         CoinBox coinBox = coinBoxService.deleteCoinBox(coinBoxId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
