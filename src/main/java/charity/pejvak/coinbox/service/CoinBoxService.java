@@ -37,7 +37,7 @@ public class CoinBoxService {
         return coinBoxRepository.saveAndFlush(oldCoinBox);
     }
 
-    public CoinBox deleteCoinBox(int id, long userId) {
+    public CoinBox deleteCoinBox(int id) {
         CoinBox coinBox = coinBoxRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchCoinBoxException();
         });
