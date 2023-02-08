@@ -68,7 +68,7 @@ public class CoinBoxController {
     public ResponseEntity<CoinBoxResponse> deleteCoinBox(
             @PathVariable long userId,
             @PathVariable int coinBoxId) {
-        CoinBox coinBox = coinBoxService.deleteCoinBox(coinBoxId);
+        CoinBox coinBox = coinBoxService.deleteCoinBox(coinBoxId,userId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
