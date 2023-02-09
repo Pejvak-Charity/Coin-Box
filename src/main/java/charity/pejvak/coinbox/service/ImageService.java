@@ -21,7 +21,8 @@ public class ImageService {
     private String savePath;
 
     @Autowired
-    public ImageService(ImageRepository repository) {
+    public ImageService(ImageRepository repository) throws NotDirectoryException {
+        init();
         this.repository = repository;
     }
 
@@ -41,7 +42,7 @@ public class ImageService {
         return "";
     }
 
-    public Image addNewImage(MultipartFile file) {
+    public Image addNewImage(MultipartFile file) throws NotDirectoryException {
         //TODO fix this 2
         String fileName = file.getOriginalFilename();
         File savedFile = new File(savePath + "\\" + fileName);
@@ -56,6 +57,15 @@ public class ImageService {
 
     public void deleteImage(Long id) {
         repository.deleteById(id);
+    }
+
+    private void init() throws NotDirectoryException {
+        File file = new File(savePath);
+        if (file.isDirectory())
+            return;
+        else
+            if (file.mkdir())
+                throw new NotDirectoryException(savePath);
     }
 
 

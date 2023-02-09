@@ -7,6 +7,7 @@ import charity.pejvak.coinbox.model.CoinBoxType;
 import charity.pejvak.coinbox.model.Image;
 import charity.pejvak.coinbox.service.CoinBoxTypeService;
 import charity.pejvak.coinbox.service.ImageService;
+import com.sun.jdi.InternalException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.NotDirectoryException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,9 +44,12 @@ public class CoinBoxTypeController {
             @RequestParam(name = "name") @NotBlank String name,
             @RequestParam(name = "size") @NotBlank String size,
             @RequestParam(name = "files") MultipartFile[] multipartFiles
-    ) {
+    ) throws NotDirectoryException {
 
-        Set<Image> images = Arrays.stream(multipartFiles).map(imageService::addNewImage).collect(Collectors.toSet());
+        Set<Image> images =  new HashSet<>();
+        for (MultipartFile multipartFile : multipartFiles) {
+            images.add(imageService.addNewImage(multipartFile));
+        }
         CoinBoxType coinBoxType = new CoinBoxType();
         coinBoxType.setName(name);
         coinBoxType.setSize(size);
@@ -73,7 +78,7 @@ public class CoinBoxTypeController {
     public ResponseEntity<ImageResponse> addCoinBoxTypeImage(
             @PathVariable long coinBoxTypeId,
             @RequestParam("file") MultipartFile multipartFile
-    ) {
+    ) throws NotDirectoryException {
         CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxTypeId);
         Image image = imageService.addNewImage(multipartFile);
         coinBoxType.addImage(image);
