@@ -2,6 +2,7 @@ package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.model.Image;
 import charity.pejvak.coinbox.repository.ImageRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -21,8 +22,7 @@ public class ImageService {
     private String savePath;
 
     @Autowired
-    public ImageService(ImageRepository repository) throws NotDirectoryException {
-        init();
+    public ImageService(ImageRepository repository) {
         this.repository = repository;
     }
 
@@ -42,7 +42,7 @@ public class ImageService {
         return "";
     }
 
-    public Image addNewImage(MultipartFile file) throws NotDirectoryException {
+    public Image addNewImage(MultipartFile file) {
         //TODO fix this 2
         String fileName = file.getOriginalFilename();
         File savedFile = new File(savePath + "\\" + fileName);
@@ -59,16 +59,14 @@ public class ImageService {
         repository.deleteById(id);
     }
 
-    private void init() throws NotDirectoryException {
+
+    @PostConstruct
+    private void init() throws NoSuchFileException {
         File file = new File(savePath);
-        if (file.isDirectory())
-            return;
-        else
+        if (!file.exists() || !file.isDirectory())
             if (file.mkdir())
-                throw new NotDirectoryException(savePath);
+                throw new NoSuchFileException(savePath, "couldn't create directory", "maybe it haven't required permission");
     }
-
-
     /*
     یک عدد آبجکت File.io تحویل میگیرد
     در مسیر مشخص شده ذخیره کند
