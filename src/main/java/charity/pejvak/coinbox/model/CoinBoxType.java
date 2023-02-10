@@ -1,7 +1,7 @@
 package charity.pejvak.coinbox.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,8 +10,13 @@ import java.util.Set;
 @Data
 @Entity(name = "coinBoxType")
 @Table(name = "coin-box-type")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode(exclude = {"images"})
 public class CoinBoxType {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -28,6 +33,10 @@ public class CoinBoxType {
 
     public void addImage(Image image){
         images.add(image);
+    }
+
+    public void addAllImages(Set<Image> images){
+        this.images.addAll(images);
     }
 
 }

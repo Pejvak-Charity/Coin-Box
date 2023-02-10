@@ -1,5 +1,6 @@
 package charity.pejvak.coinbox.service;
 
+import charity.pejvak.coinbox.model.CoinBoxType;
 import charity.pejvak.coinbox.model.Image;
 import charity.pejvak.coinbox.repository.ImageRepository;
 import jakarta.annotation.PostConstruct;
@@ -42,17 +43,17 @@ public class ImageService {
         return "";
     }
 
-    public Image addNewImage(MultipartFile file) {
+    public File addNewImageFile(MultipartFile file) {
         //TODO fix this 2
         String fileName = file.getOriginalFilename();
-        File savedFile = new File(savePath + "\\" + fileName);
+        File savedFile = new File(getBaseFile().getAbsolutePath() + "\\" + fileName);
         try {
             file.transferTo(savedFile);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return repository.save(new Image(null, savedFile.getPath(), null));
+        return savedFile;
     }
 
     public void deleteImage(Long id) {
@@ -66,6 +67,17 @@ public class ImageService {
         if (!file.exists() || !file.isDirectory())
             if (file.mkdir())
                 throw new NoSuchFileException(savePath, "couldn't create directory", "maybe it haven't required permission");
+    }
+    private File getBaseFile(){
+        return new File(savePath);
+    }
+
+    public void updateImage(Image image) {
+        repository.saveAndFlush(image);
+    }
+
+    public Image addImage(Image image){
+        return repository.saveAndFlush(image);
     }
     /*
     یک عدد آبجکت File.io تحویل میگیرد

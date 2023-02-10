@@ -14,22 +14,21 @@ public class CoinBoxTypeService {
 
     private final CoinBoxTypeRepository repository;
 
-    public Page<CoinBoxType> getCoinBoxTypes(Pageable pageable){
+    public Page<CoinBoxType> getCoinBoxTypes(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public CoinBoxType getCoinBoxType(long id){
+    public CoinBoxType getCoinBoxType(long id) {
         return repository.findById(id).orElseThrow(() -> {
             throw new NoSuchCoinBoxTypeException();
         });
     }
 
-    public CoinBoxType addCoinBoxType(CoinBoxType coinBoxType){
-
-        return null;
+    public CoinBoxType addCoinBoxType(CoinBoxType coinBoxType) {
+        return repository.saveAndFlush(coinBoxType);
     }
 
-    public void updateCoinBoxType(CoinBoxType coinBoxType) {
-
+    public CoinBoxType updateCoinBoxType(CoinBoxType coinBoxType) {
+        return repository.saveAndFlush(coinBoxType);
     }
 }

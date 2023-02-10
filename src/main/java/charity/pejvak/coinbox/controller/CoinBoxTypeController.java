@@ -7,7 +7,6 @@ import charity.pejvak.coinbox.model.CoinBoxType;
 import charity.pejvak.coinbox.model.Image;
 import charity.pejvak.coinbox.service.CoinBoxTypeService;
 import charity.pejvak.coinbox.service.ImageService;
-import com.sun.jdi.InternalException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,9 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.NotDirectoryException;
+import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1.0")
@@ -44,18 +42,26 @@ public class CoinBoxTypeController {
             @RequestParam(name = "name") @NotBlank String name,
             @RequestParam(name = "size") @NotBlank String size,
             @RequestParam(name = "files") MultipartFile[] multipartFiles
-    ) throws NotDirectoryException {
+    ) {
 
-        Set<Image> images =  new HashSet<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            images.add(imageService.addNewImage(multipartFile));
-        }
+
         CoinBoxType coinBoxType = new CoinBoxType();
         coinBoxType.setName(name);
         coinBoxType.setSize(size);
-        coinBoxType.setImages(images);
 
         coinBoxType = coinBoxTypeService.addCoinBoxType(coinBoxType);
+
+        Image image;
+        File file;
+        for (MultipartFile multipartFile : multipartFiles) {
+            file = imageService.addNewImageFile(multipartFile);
+            image = new Image();
+            image.setPath(file.getAbsolutePath());
+            image.setCoinBoxType(coinBoxType);
+            image = imageService.addImage(image);
+            coinBoxType.addImage(image);
+            coinBoxType = coinBoxTypeService.updateCoinBoxType(coinBoxType);
+        }
 
         return ResponseEntity.ok(coinBoxTypeDTO(coinBoxType));
     }
@@ -78,9 +84,13 @@ public class CoinBoxTypeController {
     public ResponseEntity<ImageResponse> addCoinBoxTypeImage(
             @PathVariable long coinBoxTypeId,
             @RequestParam("file") MultipartFile multipartFile
-    ) throws NotDirectoryException {
+    ) {
         CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxTypeId);
-        Image image = imageService.addNewImage(multipartFile);
+        File file = imageService.addNewImageFile(multipartFile);
+        Image image = new Image();
+        image.setPath(file.getAbsolutePath());
+        image.setCoinBoxType(coinBoxType);
+        image = imageService.addImage(image);
         coinBoxType.addImage(image);
         coinBoxTypeService.updateCoinBoxType(coinBoxType);
 
@@ -100,6 +110,7 @@ public class CoinBoxTypeController {
                 });
         return ResponseEntity.ok(imageDTO(image));
     }
+
     @DeleteMapping("/coin-box-types/{coinBoxTypeId}/images/{imageId}")
     public ResponseEntity<?> deleteCoinBoxTypeImage(
             @PathVariable long coinBoxTypeId,
