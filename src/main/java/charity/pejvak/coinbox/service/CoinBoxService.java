@@ -24,17 +24,8 @@ public class CoinBoxService {
         return coinBoxRepository.saveAndFlush(coinBox);
     }
 
-    public CoinBox updateCoinBox(int id, CoinBox coinBox) {
-
-        CoinBox oldCoinBox = coinBoxRepository.findById(id).orElseThrow(() -> {
-            throw new NoSuchCoinBoxException();
-        });
-
-//        oldCoinBox.setName(coinBox.getName());
-//        oldCoinBox.setSize(coinBox.getSize());
-        oldCoinBox.setStatus(coinBox.getStatus());
-
-        return coinBoxRepository.saveAndFlush(oldCoinBox);
+    public CoinBox updateCoinBox(CoinBox coinBox) {
+        return coinBoxRepository.saveAndFlush(coinBox);
     }
 
     public CoinBox deleteCoinBox(int id) {

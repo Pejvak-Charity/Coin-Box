@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class CoinBoxResponse {
     private long id;
     private String code;
+    private long typeId;
+    private String typeName;
     private LocalDateTime manufactureDateTime;
     private long lastUserId;
     private String lastUserFullName;

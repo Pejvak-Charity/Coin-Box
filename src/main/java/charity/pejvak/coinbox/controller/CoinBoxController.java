@@ -4,8 +4,10 @@ package charity.pejvak.coinbox.controller;
 import charity.pejvak.coinbox.componenet.CoinBoxRequest;
 import charity.pejvak.coinbox.componenet.CoinBoxResponse;
 import charity.pejvak.coinbox.model.CoinBox;
+import charity.pejvak.coinbox.model.CoinBoxType;
 import charity.pejvak.coinbox.model.enums.CoinBoxStatus;
 import charity.pejvak.coinbox.service.CoinBoxService;
+import charity.pejvak.coinbox.service.CoinBoxTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +25,8 @@ import java.util.stream.Collectors;
 public class CoinBoxController {
 
 
-    final private CoinBoxService coinBoxService;
+    private final CoinBoxService coinBoxService;
+    private final CoinBoxTypeService coinBoxTypeService;
 
     @GetMapping("/coin-boxes")
     public ResponseEntity<Map<String, Object>> getCoinBoxes(@RequestParam(required = false, defaultValue = "0") int page,
@@ -36,9 +39,12 @@ public class CoinBoxController {
 
     @PostMapping("/coin-boxes")
     public ResponseEntity<CoinBoxResponse> addCoinBox(@RequestBody CoinBoxRequest coinBoxRequest) {
-        CoinBox coinBox = new CoinBox();
+        CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxRequest.getTypeId());
 
-        //fixme
+        CoinBox coinBox = new CoinBox();
+        coinBox.setType(coinBoxType);
+        coinBox.setCode(coinBoxRequest.getCode());
+        coinBox.setManufactureDate(coinBoxRequest.getManufactureDate());
         coinBox.setStatus(CoinBoxStatus.ACTIVE.getCode());
         coinBox = coinBoxService.addCoinBox(coinBox);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
@@ -51,9 +57,13 @@ public class CoinBoxController {
     }
 
     @PutMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBox coinBox) {
-        CoinBox newCoinBox = coinBoxService.updateCoinBox(coinBoxId, coinBox);
-        return ResponseEntity.ok(coinBoxDTO(newCoinBox));
+    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBoxRequest coinBoxRequest) {
+        CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxRequest.getTypeId());
+        CoinBox coinBox = coinBoxService.getCoinBox(coinBoxId);
+        coinBox.setCode(coinBoxRequest.getCode());
+        coinBox.setType(coinBoxType);
+        coinBox = coinBoxService.updateCoinBox( coinBox);
+        return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
     @DeleteMapping("/coin-boxes/{coinBoxId}")
@@ -75,6 +85,8 @@ public class CoinBoxController {
         CoinBoxResponse coinBoxResponse = new CoinBoxResponse();
         coinBoxResponse.setId(coinBox.getId());
         coinBoxResponse.setCode(coinBox.getCode());
+        coinBoxResponse.setTypeId(coinBox.getType().getId());
+        coinBoxResponse.setTypeName(coinBox.getType().getName());
         coinBoxResponse.setManufactureDateTime(coinBox.getManufactureDate());
         coinBoxResponse.setLastCountingDateTime(coinBoxService.getLastCountingDate());
         coinBoxResponse.setLastUserId(coinBoxService.getLastUserId());
