@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +14,5 @@ public class CoinBoxTypeResponse {
     private Long id;
     private String name;
     private String size;
-    private List<ImageResponse> images = new ArrayList<>();
+    private ImageResponse defaultImage;
 }

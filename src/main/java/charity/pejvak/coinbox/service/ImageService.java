@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.*;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ImageService {
@@ -78,6 +80,14 @@ public class ImageService {
 
     public Image addImage(Image image){
         return repository.saveAndFlush(image);
+    }
+
+    public Image setDefaultImage(Image image) {
+       List<Image> similarImages=  repository.findAllByCoinBoxType_Id(image.getCoinBoxType().getId());
+       similarImages.stream().filter(image1 -> !Objects.equals(image1.getId(), image.getId())).forEach(image1 -> image1.setDefault(false));
+       image.setDefault(true);
+       repository.saveAll(similarImages);
+       return repository.saveAndFlush(image);
     }
     /*
     یک عدد آبجکت File.io تحویل میگیرد

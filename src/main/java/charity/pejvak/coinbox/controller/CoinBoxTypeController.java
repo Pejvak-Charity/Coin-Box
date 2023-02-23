@@ -13,10 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -31,9 +33,12 @@ public class CoinBoxTypeController {
 
     @GetMapping("/coin-box-types")
     public ResponseEntity<Map<String, Object>> getCoinBoxes(@RequestParam(required = false, defaultValue = "0") int page,
-                                                            @RequestParam(required = false, defaultValue = "50") int pageSize) {
+                                                            @RequestParam(required = false, defaultValue = "50") int pageSize,
+                                                            Authentication authentication, Principal principal) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<CoinBoxType> coinBoxTypePage = coinBoxTypeService.getCoinBoxTypes(pageable);
+        System.out.println("authentication = " + authentication.getName());
+        System.out.println("principal = " + principal.getName());
         return ResponseEntity.ok(toResponse(coinBoxTypePage));
     }
 
@@ -126,6 +131,20 @@ public class CoinBoxTypeController {
         return ResponseEntity.ok(imageDTO(image));
     }
 
+    @PostMapping("/coin-box-types/{coinBoxTypeId}/images/{imageId}/set-default")
+    public ResponseEntity<ImageResponse> setDefaultImageForCoinBoxType( @PathVariable long coinBoxTypeId,
+                                                                        @PathVariable long imageId){
+        Image image = coinBoxTypeService.getCoinBoxType(coinBoxTypeId)
+                .getImages().stream().filter(imageFilter -> imageFilter.getId() == imageId)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new NoSuchImageFoundException();
+                });
+        image = imageService.setDefaultImage(image);
+        return ResponseEntity.ok(imageDTO(image));
+    }
+
+
 
     private Map<String, Object> toResponse(Page<CoinBoxType> page) {
         Map<String, Object> response = new HashMap<>();
@@ -142,8 +161,8 @@ public class CoinBoxTypeController {
         coinBoxTypeResponse.setId(coinBoxType.getId());
         coinBoxTypeResponse.setName(coinBoxType.getName());
         coinBoxTypeResponse.setSize(coinBoxType.getSize());
-        List<ImageResponse> paths = coinBoxType.getImages().stream().map(this::imageDTO).toList();
-        coinBoxTypeResponse.setImages(paths);
+        ImageResponse defaultImage = coinBoxType.getImages().stream().filter(Image::isDefault).map(this::imageDTO).findFirst().orElse(null);
+        coinBoxTypeResponse.setDefaultImage(defaultImage);
         return coinBoxTypeResponse;
     }
 
@@ -151,6 +170,7 @@ public class CoinBoxTypeController {
         return ImageResponse.builder()
                 .id(image.getId())
                 .downloadURL(imageService.getDownloadPath(image))
+                .isDefault(image.isDefault())
                 .build();
     }
 }

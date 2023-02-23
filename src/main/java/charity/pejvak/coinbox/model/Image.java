@@ -27,4 +27,7 @@ public class Image {
     @JoinColumn(name = "coin-box-type-id", referencedColumnName = "id")
     private CoinBoxType coinBoxType;
 
+    @Column(name = "isDefault")
+    boolean isDefault;
+
 }

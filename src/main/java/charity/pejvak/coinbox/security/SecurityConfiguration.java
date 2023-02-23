@@ -31,7 +31,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/**","/actuator/**","/api/v1.0/login/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/actuator/**","/api/v1.0/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -44,7 +44,6 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-
         authenticationProvider.setUserDetailsService(userService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 

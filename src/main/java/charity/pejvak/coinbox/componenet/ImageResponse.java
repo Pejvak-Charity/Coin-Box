@@ -14,4 +14,5 @@ public class ImageResponse {
     private String downloadURL;
     private String fileType;
     private long fileSize;
+    private boolean isDefault;
 }
