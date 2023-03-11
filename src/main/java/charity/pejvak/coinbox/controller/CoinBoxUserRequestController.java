@@ -22,7 +22,7 @@ public class CoinBoxUserRequestController {
     }
 
     @GetMapping("/{userId}/coin-box-requests/{requestId}")
-    public ResponseEntity<?> getCoinBoxResuests(
+    public ResponseEntity<?> getCoinBoxRequest(
             @PathVariable long userId,
             @PathVariable long requestId) {
         return null;

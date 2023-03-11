@@ -50,9 +50,13 @@ public class AddressService {
         return addressRepository.saveAndFlush(oldAddress);
     }
 
-    public Address deleteAddress(long userId, long addressId) {
-        Address address = getAddress(userId, addressId);
+    public Address deleteAddress(long addressId) {
+        Address address = getAddress(addressId);
         addressRepository.delete(address);
         return address;
+    }
+
+    public Page<Address> getAddresses(Pageable pageable) {
+        return addressRepository.findAll(pageable);
     }
 }

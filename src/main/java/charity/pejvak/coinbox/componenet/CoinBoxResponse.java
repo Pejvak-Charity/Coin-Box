@@ -20,5 +20,8 @@ public class CoinBoxResponse {
     private long lastUserId;
     private String lastUserFullName;
     private LocalDateTime lastCountingDateTime;
+    private LocalDateTime returnDateTime;
+
+    private LocalDateTime deliveryDateTime;
 
 }
