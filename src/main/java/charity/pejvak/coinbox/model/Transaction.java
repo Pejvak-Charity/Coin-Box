@@ -19,7 +19,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(generator = "seq_transaction", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "seq_transaction", sequenceName = "sqe_transaction", allocationSize = 1)
+    @SequenceGenerator(name = "seq_transaction", sequenceName = "seq_transaction", allocationSize = 1)
     private Long id;
 
     private String referenceCode;
