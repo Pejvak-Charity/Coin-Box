@@ -66,10 +66,20 @@ public class User implements UserDetails {
         addresses.add(address);
     }
 
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Transaction> transactions = new HashSet<>();
+
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
+
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "sign-up-date",insertable = false)
+    @Column(name = "sign-up-date", insertable = false)
     @CreatedDate
     private LocalDateTime signUpDate;
 
