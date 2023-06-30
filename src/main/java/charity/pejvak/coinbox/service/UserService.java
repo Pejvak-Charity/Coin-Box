@@ -24,7 +24,6 @@ public class UserService implements UserDetailsService {
         });
     }
 
-
     public User addOrGetUserByPhoneNumber(String phoneNumber) {
         User user = userRepository.findByPhoneNumber(phoneNumber).orElse(null);
         if (user == null) {

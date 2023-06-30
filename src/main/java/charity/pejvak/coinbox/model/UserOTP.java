@@ -21,10 +21,6 @@ public class UserOTP {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @ManyToOne
-    @JoinColumn(name = "userId",referencedColumnName = "Id")
-    private User user;
-
     @CreatedDate
     private Date createDate;
 

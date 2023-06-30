@@ -13,11 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,10 +59,9 @@ public class AddressController {
     }
 
 
-
     @PostMapping("/addresses")
     public ResponseEntity<AddressResponse> addAddress(HttpServletRequest request,
-                                              @RequestBody AddressRequest addressRequest
+                                                      @RequestBody AddressRequest addressRequest
     ) {
         Province province = provinceService.getProvinceById(addressRequest.getProvinceId());
 
@@ -93,8 +90,8 @@ public class AddressController {
 
     @PutMapping("/addresses/{addressId}")
     public ResponseEntity<AddressResponse> updateAddress(HttpServletRequest request,
-                                                  @PathVariable long addressId,
-                                                  @RequestBody AddressRequest addressRequest
+                                                         @PathVariable long addressId,
+                                                         @RequestBody AddressRequest addressRequest
     ) {
         Province province = provinceService.getProvinceById(addressRequest.getProvinceId());
         City city = cityService.getCity(addressRequest.getProvinceId(), addressRequest.getCityId());
@@ -117,7 +114,7 @@ public class AddressController {
 
     @DeleteMapping("/addresses/{addressId}")
     public ResponseEntity<AddressResponse> deleteUserAddress(HttpServletRequest request,
-                                                     @PathVariable long addressId) {
+                                                             @PathVariable long addressId) {
 
         LOG.info("Connection from : '" + request.getRemoteAddr() + ":" + request.getRemotePort() +
                 "' to '/api/v1.0/addresses/" + addressId + "at DELETE.deleteUserAddress");
@@ -139,7 +136,8 @@ public class AddressController {
         return (User) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
     }
-    private AddressResponse AddressDTO(Address address){
+
+    private AddressResponse AddressDTO(Address address) {
         return new AddressResponse();
     }
 }

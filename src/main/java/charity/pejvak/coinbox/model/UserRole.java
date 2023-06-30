@@ -15,9 +15,14 @@ public class UserRole {
     @GeneratedValue(generator = "seq_user_role", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "seq_user_role", sequenceName = "seq_user_role", allocationSize = 1)
     private Long id;
-    private Long userId;
 
-    private Long roleId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 
 }

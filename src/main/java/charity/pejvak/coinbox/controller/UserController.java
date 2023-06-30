@@ -38,7 +38,6 @@ public class UserController {
         user.setLastName(userRequest.getLastName());
         user.setPhoneNumber(userRequest.getPhoneNumber());
         user.setEmail(userRequest.getEmail());
-        user.setRole(userRequest.getRole());
         user = userService.addUser(user);
         return ResponseEntity.ok(userDTO(user));
     }
@@ -48,6 +47,21 @@ public class UserController {
         User user = userService.getUser(userId);
         return ResponseEntity.ok(userDTO(user));
     }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable long userId,@RequestBody UserRequest userRequest ){
+        User user = userService.getUser(userId);
+        if (userRequest.getEmail() != null)
+            user.setEmail(userRequest.getEmail());
+
+        if (userRequest.getPhoneNumber() != null)
+            user.setPhoneNumber(userRequest.getPhoneNumber());
+
+        userService.updateUser(user);
+
+        return ResponseEntity.ok(userDTO(user));
+    }
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable long userId) {

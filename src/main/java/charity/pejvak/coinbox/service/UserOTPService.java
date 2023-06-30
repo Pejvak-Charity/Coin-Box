@@ -7,6 +7,7 @@ import charity.pejvak.coinbox.model.UserOTP;
 import charity.pejvak.coinbox.model.enums.Role;
 import charity.pejvak.coinbox.repository.UserOTPRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserOTPService {
 
     private final UserOTPRepository userOtpRepository;
@@ -31,11 +33,12 @@ public class UserOTPService {
             user = userService.addUser(user);
         }
 
-        UserOTP userOTP = UserOTP.builder().otp(generateCode(4)).createDate(new Date()).phoneNumber(user.getPhoneNumber()).ip(ip).user(user).build();
+        UserOTP userOTP = UserOTP.builder().otp(generateCode(4)).createDate(new Date()).phoneNumber(user.getPhoneNumber()).ip(ip).build();
 
         // todo send otp
 
-        userOtpRepository.saveAndFlush(userOTP);
+        userOTP = userOtpRepository.saveAndFlush(userOTP);
+        log.warn("User OTP: {}",userOTP);
 
     }
 

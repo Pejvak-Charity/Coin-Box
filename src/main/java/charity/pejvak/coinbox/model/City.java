@@ -3,6 +3,8 @@ package charity.pejvak.coinbox.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,63 +12,28 @@ import java.util.Set;
 
 @Entity(name = "city")
 @Table(name = "city")
+@Getter
+@Setter
 public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",insertable = false,updatable = false,nullable = false)
+    @Column(name = "id", insertable = false, updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne()
-    @JoinColumn(name = "province_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "province_id", referencedColumnName = "id", nullable = false)
     @JsonIgnore
     private Province province;
 
-    @OneToMany(mappedBy = "city",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
     private final Set<Zone> zones = new HashSet<>();
 
-    public void addZone(Zone zone){
+    public void addZone(Zone zone) {
         zones.add(zone);
-    }
-
-
-    public City() {
-    }
-
-
-    public City(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Province getProvince() {
-        return province;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
-    public Set<Zone> getZones() {
-        return zones;
     }
 
     @Override

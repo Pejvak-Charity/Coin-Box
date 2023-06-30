@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +17,14 @@ public class UserRequest {
 
     private String firstName;
     private String lastName;
+    private LocalDate birthDate;
+
     @Nullable
-    private String email ;
+    private String email;
+
+    private Long provinceId;
+    private Long cityId;
+
+    @Nullable
     private String phoneNumber;
-    private String nationalCode;
-    private Role role;
 }

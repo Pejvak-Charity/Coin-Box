@@ -83,11 +83,6 @@ public class User implements UserDetails {
     @CreatedDate
     private LocalDateTime signUpDate;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<UserOTP> userOTPS = new HashSet<>();
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));
