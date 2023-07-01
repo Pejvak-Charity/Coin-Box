@@ -2,7 +2,6 @@ package charity.pejvak.coinbox.model;
 
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestStatus;
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity(name = "CoinBoxRequest")
 @Table(name = "coin_box_request")
@@ -40,7 +37,7 @@ public class CoinBoxUserRequest {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User requestingUser;
+    private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -55,17 +52,8 @@ public class CoinBoxUserRequest {
     @Column(name = "preferred-user-date-time")
     private LocalDateTime preferredDateTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "coinbox_id", referencedColumnName = "id")
-    private CoinBox coinBox;
+    private Long coinBoxTypeId;
+    private Long coinBoxId;
 
-    @OneToMany(mappedBy = "coinBoxUserRequest")
-    @JsonIgnore
-    private Set<CoinBoxUserRequestLog> coinBoxUserRequestLogs = new HashSet<>();
-
-
-    public void addLog(CoinBoxUserRequestLog coinBoxUserRequestLog) {
-        coinBoxUserRequestLogs.add(coinBoxUserRequestLog);
-    }
 
 }

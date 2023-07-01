@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CoinBoxUserRequestRequest {
+public class CoinBoxUserResponse {
+
     private Long coinBoxId;
     private String coinBoxTitle;
-    private Long addressId;
-    private LocalDateTime preferredDateTime;
+    private Long coinBoxAmount;
+
 }

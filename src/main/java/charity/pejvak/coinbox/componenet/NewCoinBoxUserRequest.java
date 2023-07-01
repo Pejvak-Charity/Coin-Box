@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CoinBoxUserRequestRequest {
-    private Long coinBoxId;
+public class NewCoinBoxUserRequest {
+    private Long coinBoxType;
     private String coinBoxTitle;
     private Long addressId;
     private LocalDateTime preferredDateTime;

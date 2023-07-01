@@ -21,25 +21,18 @@ public class CoinBox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false, insertable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne()
     @JoinColumn(name = "type-id")
     private CoinBoxType type;
-
-
     @Column(name = "code")
     private String code;
 
     @Column(name = "manufacture-date")
     private LocalDateTime manufactureDate;
 
-
     @Column(name = "status", nullable = false)
     private Integer status = 1;
-
-    @OneToMany(mappedBy = "coinBox")
-    @JsonIgnore
-    private Set<CoinBoxUserRequest> requests = new HashSet<>();
 
 }

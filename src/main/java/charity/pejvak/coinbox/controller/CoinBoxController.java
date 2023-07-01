@@ -51,23 +51,23 @@ public class CoinBoxController {
     }
 
     @GetMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> getCoinBox(@PathVariable int coinBoxId) {
+    public ResponseEntity<CoinBoxResponse> getCoinBox(@PathVariable Long coinBoxId) {
         CoinBox coinBox = coinBoxService.getCoinBox(coinBoxId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
     @PutMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable int coinBoxId, @RequestBody CoinBoxRequest coinBoxRequest) {
+    public ResponseEntity<CoinBoxResponse> updateCoinBox(@PathVariable Long coinBoxId, @RequestBody CoinBoxRequest coinBoxRequest) {
         CoinBoxType coinBoxType = coinBoxTypeService.getCoinBoxType(coinBoxRequest.getTypeId());
         CoinBox coinBox = coinBoxService.getCoinBox(coinBoxId);
         coinBox.setCode(coinBoxRequest.getCode());
         coinBox.setType(coinBoxType);
-        coinBox = coinBoxService.updateCoinBox( coinBox);
+        coinBox = coinBoxService.updateCoinBox(coinBox);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
 
     @DeleteMapping("/coin-boxes/{coinBoxId}")
-    public ResponseEntity<CoinBoxResponse> deleteCoinBox(@PathVariable int coinBoxId) {
+    public ResponseEntity<CoinBoxResponse> deleteCoinBox(@PathVariable Long coinBoxId) {
         CoinBox coinBox = coinBoxService.deleteCoinBox(coinBoxId);
         return ResponseEntity.ok(coinBoxDTO(coinBox));
     }
@@ -81,6 +81,7 @@ public class CoinBoxController {
         response.put("totalElements", page.getTotalElements());
         return response;
     }
+
     private CoinBoxResponse coinBoxDTO(CoinBox coinBox) {
         CoinBoxResponse coinBoxResponse = new CoinBoxResponse();
         coinBoxResponse.setId(coinBox.getId());

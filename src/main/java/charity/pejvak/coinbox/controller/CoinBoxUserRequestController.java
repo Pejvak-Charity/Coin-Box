@@ -1,50 +1,47 @@
 package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.CoinBoxUserRequestRequest;
+import charity.pejvak.coinbox.componenet.NewCoinBoxUserRequest;
+import charity.pejvak.coinbox.componenet.CoinBoxUserRequestResponse;
+import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.service.CoinBoxUserRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1.0")
 @RequiredArgsConstructor
 public class CoinBoxUserRequestController {
 
-    @GetMapping("/{userId}/coin-box-requests")
-    public ResponseEntity<Map<String, Object>> getCoinBoxResuests(
-            @PathVariable long userId,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "50") int pageSize
-    ) {
-        return null;
+    private final CoinBoxUserRequestService coinBoxUserRequestService;
+
+
+
+    @PostMapping("/coin-box-requests/new-coin-box")
+    public ResponseEntity<CoinBoxUserRequestResponse> addCoinBoxRequest(
+            @RequestBody NewCoinBoxUserRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(coinBoxUserRequestService.newCoinBoxUser(user.getId(), request));
     }
 
-    @GetMapping("/{userId}/coin-box-requests/{requestId}")
-    public ResponseEntity<?> getCoinBoxRequest(
-            @PathVariable long userId,
-            @PathVariable long requestId) {
-        return null;
-    }
-
-    @PostMapping("/{userId}/coin-box-requests")
-    public ResponseEntity addCoinBoxRequest(
-            @PathVariable long userId,
+    @PostMapping("/coin-box-requests/counting-request")
+    public ResponseEntity<CoinBoxUserRequestResponse> count(
             @RequestBody CoinBoxUserRequestRequest request) {
-        return null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(coinBoxUserRequestService.countingRequest(user.getId(), request));
     }
 
-    @PutMapping("/{userId}/coin-box-requests")
-    public ResponseEntity updateStatus(@PathVariable long userId) {
-        return null;
+    @PostMapping("/coin-box-requests/returning-request")
+    public ResponseEntity<CoinBoxUserRequestResponse> returning(
+            @RequestBody CoinBoxUserRequestRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(coinBoxUserRequestService.returningRequest(user.getId(), request));
     }
 
-    @GetMapping("/{userId}/coin-box-requests/{requestId}/history")
-    public ResponseEntity getRequestHistory(
-            @PathVariable long userId,
-            @PathVariable long requestId
-    ) {
-        return null;
-    }
 }
