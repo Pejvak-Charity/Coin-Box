@@ -1,5 +1,6 @@
 package charity.pejvak.coinbox.componenet;
 
+import charity.pejvak.coinbox.model.enums.UserStatus;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,5 @@ public class UserResponse {
     private String nationalCode;
     private String role;
     private LocalDateTime signUpDate;
+    private UserStatus userStatus;
 }

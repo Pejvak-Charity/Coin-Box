@@ -1,9 +1,8 @@
 package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchCityException;
-import charity.pejvak.coinbox.model.City;
-import charity.pejvak.coinbox.model.Province;
-import charity.pejvak.coinbox.model.Zone;
+import charity.pejvak.coinbox.model.area.City;
+import charity.pejvak.coinbox.model.area.Province;
 import charity.pejvak.coinbox.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

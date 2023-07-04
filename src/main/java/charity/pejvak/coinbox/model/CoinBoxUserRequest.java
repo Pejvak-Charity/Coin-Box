@@ -1,7 +1,9 @@
 package charity.pejvak.coinbox.model;
 
+import charity.pejvak.coinbox.model.area.Address;
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestStatus;
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestType;
+import charity.pejvak.coinbox.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

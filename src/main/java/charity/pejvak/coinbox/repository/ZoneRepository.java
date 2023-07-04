@@ -1,6 +1,6 @@
 package charity.pejvak.coinbox.repository;
 
-import charity.pejvak.coinbox.model.Zone;
+import charity.pejvak.coinbox.model.area.Zone;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

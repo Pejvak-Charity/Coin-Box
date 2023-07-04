@@ -1,8 +1,8 @@
 package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchAddressFoundException;
-import charity.pejvak.coinbox.model.Address;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.area.Address;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -2,8 +2,12 @@ package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.AddressRequest;
 import charity.pejvak.coinbox.componenet.AddressResponse;
-import charity.pejvak.coinbox.model.*;
+import charity.pejvak.coinbox.model.area.Address;
+import charity.pejvak.coinbox.model.area.City;
+import charity.pejvak.coinbox.model.area.Province;
+import charity.pejvak.coinbox.model.area.Zone;
 import charity.pejvak.coinbox.model.enums.Role;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

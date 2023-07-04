@@ -1,6 +1,6 @@
 package charity.pejvak.coinbox.security;
 
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.service.JWTService;
 import charity.pejvak.coinbox.service.UserService;
 import jakarta.servlet.FilterChain;

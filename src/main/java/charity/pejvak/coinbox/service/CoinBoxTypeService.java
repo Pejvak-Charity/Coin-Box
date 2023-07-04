@@ -1,7 +1,7 @@
 package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchCoinBoxTypeException;
-import charity.pejvak.coinbox.model.CoinBoxType;
+import charity.pejvak.coinbox.model.coinbox.CoinBoxType;
 import charity.pejvak.coinbox.repository.CoinBoxTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

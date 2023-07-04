@@ -1,6 +1,6 @@
 package charity.pejvak.coinbox.service;
 
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -44,7 +44,7 @@ public class JWTService {
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*10*24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

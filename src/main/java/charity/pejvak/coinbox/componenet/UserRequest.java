@@ -22,6 +22,7 @@ public class UserRequest {
     @Nullable
     private String email;
 
+    //todo seperate address from user request plz !!!
     private Long provinceId;
     private Long cityId;
 

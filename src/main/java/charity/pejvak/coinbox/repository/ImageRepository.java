@@ -1,6 +1,6 @@
 package charity.pejvak.coinbox.repository;
 
-import charity.pejvak.coinbox.model.Image;
+import charity.pejvak.coinbox.model.utility.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

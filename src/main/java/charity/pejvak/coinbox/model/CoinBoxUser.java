@@ -23,4 +23,7 @@ public class CoinBoxUser {
 
     private Long coinBoxId;
 
+
+    //todo add Assign Date and UnAssign Date
+
 }

@@ -1,9 +1,9 @@
 package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchZoneExistsException;
-import charity.pejvak.coinbox.model.City;
-import charity.pejvak.coinbox.model.Province;
-import charity.pejvak.coinbox.model.Zone;
+import charity.pejvak.coinbox.model.area.City;
+import charity.pejvak.coinbox.model.area.Province;
+import charity.pejvak.coinbox.model.area.Zone;
 import charity.pejvak.coinbox.repository.ZoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

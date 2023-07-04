@@ -3,7 +3,7 @@ package charity.pejvak.coinbox.controller;
 import charity.pejvak.coinbox.componenet.DigitalCoinBoxTransactionRequest;
 import charity.pejvak.coinbox.componenet.DigitalCoinBoxTransactionResponse;
 import charity.pejvak.coinbox.componenet.TransactionResponse;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.model.enums.TransactionType;
 import charity.pejvak.coinbox.service.TransactionService;
 import lombok.RequiredArgsConstructor;

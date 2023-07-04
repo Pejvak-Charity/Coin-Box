@@ -2,8 +2,8 @@ package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.ExpiredOTPException;
 import charity.pejvak.coinbox.exception.NoSuchUserOTPExistsException;
-import charity.pejvak.coinbox.model.User;
-import charity.pejvak.coinbox.model.UserOTP;
+import charity.pejvak.coinbox.model.user.User;
+import charity.pejvak.coinbox.model.user.UserOTP;
 import charity.pejvak.coinbox.model.enums.Role;
 import charity.pejvak.coinbox.repository.UserOTPRepository;
 import lombok.RequiredArgsConstructor;

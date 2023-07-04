@@ -1,7 +1,7 @@
 package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.CoinBoxUserResponse;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.service.CoinBoxUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

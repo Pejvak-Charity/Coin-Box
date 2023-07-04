@@ -1,6 +1,6 @@
 package charity.pejvak.coinbox.componenet;
 
-import charity.pejvak.coinbox.model.City;
+import charity.pejvak.coinbox.model.area.City;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

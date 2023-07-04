@@ -4,7 +4,7 @@ import charity.pejvak.coinbox.componenet.CoinBoxUserRequestRequest;
 import charity.pejvak.coinbox.componenet.NewCoinBoxUserRequest;
 import charity.pejvak.coinbox.componenet.CoinBoxUserRequestResponse;
 import charity.pejvak.coinbox.model.CoinBoxUserRequest;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestStatus;
 import charity.pejvak.coinbox.model.enums.CoinBoxUserRequestType;
 import charity.pejvak.coinbox.repository.CoinBoxUserRequestRepository;
@@ -41,8 +41,10 @@ public class CoinBoxUserRequestService {
     }
     
     public CoinBoxUserRequestResponse countingRequest(Long id, CoinBoxUserRequestRequest request) {
+        return null;
     }
 
     public CoinBoxUserRequestResponse returningRequest(Long id, CoinBoxUserRequestRequest request) {
+        return null;
     }
 }

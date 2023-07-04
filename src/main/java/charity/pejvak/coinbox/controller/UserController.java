@@ -2,7 +2,8 @@ package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.UserRequest;
 import charity.pejvak.coinbox.componenet.UserResponse;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
+import charity.pejvak.coinbox.model.enums.UserStatus;
 import charity.pejvak.coinbox.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable long userId,@RequestBody UserRequest userRequest ){
+    public ResponseEntity<UserResponse> updateUser(@PathVariable long userId, @RequestBody UserRequest userRequest) {
         User user = userService.getUser(userId);
         if (userRequest.getEmail() != null)
             user.setEmail(userRequest.getEmail());
@@ -57,7 +58,13 @@ public class UserController {
         if (userRequest.getPhoneNumber() != null)
             user.setPhoneNumber(userRequest.getPhoneNumber());
 
-        userService.updateUser(user);
+        if (userRequest.getLastName() != null)
+            user.setLastName(userRequest.getLastName());
+
+        if (userRequest.getFirstName() != null)
+            user.setFirstName(userRequest.getFirstName());
+
+        user = userService.updateUser(user);
 
         return ResponseEntity.ok(userDTO(user));
     }
@@ -90,6 +97,9 @@ public class UserController {
                 .nationalCode(user.getNationalCode())
                 .role(user.getRole().toString())
                 .signUpDate(user.getSignUpDate())
+                .userStatus(user.getStatus())
                 .build();
     }
+
+
 }

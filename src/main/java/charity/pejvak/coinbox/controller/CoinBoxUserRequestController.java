@@ -3,7 +3,7 @@ package charity.pejvak.coinbox.controller;
 import charity.pejvak.coinbox.componenet.CoinBoxUserRequestRequest;
 import charity.pejvak.coinbox.componenet.NewCoinBoxUserRequest;
 import charity.pejvak.coinbox.componenet.CoinBoxUserRequestResponse;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.service.CoinBoxUserRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

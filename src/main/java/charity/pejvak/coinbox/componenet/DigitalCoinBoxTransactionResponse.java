@@ -1,13 +1,15 @@
 package charity.pejvak.coinbox.componenet;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class DigitalCoinBoxTransactionResponse extends TransactionResponse {
+public class DigitalCoinBoxTransactionResponse {
 
     public String gatewayURL;
 }

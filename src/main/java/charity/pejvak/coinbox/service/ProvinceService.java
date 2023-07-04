@@ -1,8 +1,8 @@
 package charity.pejvak.coinbox.service;
 
 import charity.pejvak.coinbox.exception.NoSuchProvinceExistsException;
-import charity.pejvak.coinbox.model.City;
-import charity.pejvak.coinbox.model.Province;
+import charity.pejvak.coinbox.model.area.City;
+import charity.pejvak.coinbox.model.area.Province;
 import charity.pejvak.coinbox.repository.ProvinceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

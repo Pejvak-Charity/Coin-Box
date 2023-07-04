@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,15 +30,18 @@ public class SecurityConfiguration {
        // http.authorizeHttpRequests((req) -> req.anyRequest().permitAll());
 
         http
-                .csrf().disable()
+//                .csrf().disable()
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/actuator/**","/**","/api/v1.0/login/**").permitAll()
+                .authorizeHttpRequests()
+                    .requestMatchers("/actuator/**","/**","/api/v1.0/login/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable();
         return http.build();
     }
 

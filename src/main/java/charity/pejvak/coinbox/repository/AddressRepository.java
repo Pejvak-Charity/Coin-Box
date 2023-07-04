@@ -1,9 +1,7 @@
 package charity.pejvak.coinbox.repository;
 
-import charity.pejvak.coinbox.model.Address;
-import charity.pejvak.coinbox.model.City;
-import charity.pejvak.coinbox.model.User;
-import charity.pejvak.coinbox.model.Zone;
+import charity.pejvak.coinbox.model.area.Address;
+import charity.pejvak.coinbox.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

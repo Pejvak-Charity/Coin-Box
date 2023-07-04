@@ -3,8 +3,8 @@ package charity.pejvak.coinbox.controller;
 
 import charity.pejvak.coinbox.componenet.CoinBoxRequest;
 import charity.pejvak.coinbox.componenet.CoinBoxResponse;
-import charity.pejvak.coinbox.model.CoinBox;
-import charity.pejvak.coinbox.model.CoinBoxType;
+import charity.pejvak.coinbox.model.coinbox.CoinBox;
+import charity.pejvak.coinbox.model.coinbox.CoinBoxType;
 import charity.pejvak.coinbox.model.enums.CoinBoxStatus;
 import charity.pejvak.coinbox.service.CoinBoxService;
 import charity.pejvak.coinbox.service.CoinBoxTypeService;

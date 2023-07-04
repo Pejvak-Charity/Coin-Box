@@ -4,7 +4,7 @@ import charity.pejvak.coinbox.componenet.AuthenticationRequest;
 import charity.pejvak.coinbox.componenet.AuthenticationResponse;
 import charity.pejvak.coinbox.componenet.OTPRequest;
 import charity.pejvak.coinbox.componenet.OTPResponse;
-import charity.pejvak.coinbox.model.User;
+import charity.pejvak.coinbox.model.user.User;
 import charity.pejvak.coinbox.service.JWTService;
 import charity.pejvak.coinbox.service.UserOTPService;
 import charity.pejvak.coinbox.service.UserService;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1.0/login")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class LoginController {
     private final UserOTPService userOtpService;
